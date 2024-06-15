@@ -1,6 +1,6 @@
 namespace SchoolManagement.Models
 {
-    public class Student
+    public class Student: PersonInformation
     {
   
 

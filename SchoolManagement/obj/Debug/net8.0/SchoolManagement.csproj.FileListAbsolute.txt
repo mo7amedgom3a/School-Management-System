@@ -150,3 +150,15 @@
 /home/mohamed/School-Management-System/SchoolManagement/obj/Debug/net8.0/SchoolManagement.pdb
 /home/mohamed/School-Management-System/SchoolManagement/obj/Debug/net8.0/SchoolManagement.genruntimeconfig.cache
 /home/mohamed/School-Management-System/SchoolManagement/obj/Debug/net8.0/ref/SchoolManagement.dll
+/home/mohamed/School-Management-System/backend/SchoolManagement/obj/Debug/net8.0/SchoolManagement.csproj.AssemblyReference.cache
+/home/mohamed/School-Management-System/backend/SchoolManagement/obj/Debug/net8.0/SchoolManagement.GeneratedMSBuildEditorConfig.editorconfig
+/home/mohamed/School-Management-System/backend/SchoolManagement/obj/Debug/net8.0/SchoolManagement.AssemblyInfoInputs.cache
+/home/mohamed/School-Management-System/backend/SchoolManagement/obj/Debug/net8.0/SchoolManagement.AssemblyInfo.cs
+/home/mohamed/School-Management-System/backend/SchoolManagement/obj/Debug/net8.0/SchoolManagement.csproj.CoreCompileInputs.cache
+/home/mohamed/School-Management-System/backend/SchoolManagement/obj/Debug/net8.0/SchoolManagement.MvcApplicationPartsAssemblyInfo.cs
+/home/mohamed/School-Management-System/backend/SchoolManagement/obj/Debug/net8.0/SchoolManagement.MvcApplicationPartsAssemblyInfo.cache
+/home/mohamed/School-Management-System/backend/SchoolManagement/obj/Debug/net8.0/SchoolManagement.sourcelink.json
+/home/mohamed/School-Management-System/backend/SchoolManagement/obj/Debug/net8.0/SchoolManagement.dll
+/home/mohamed/School-Management-System/backend/SchoolManagement/obj/Debug/net8.0/refint/SchoolManagement.dll
+/home/mohamed/School-Management-System/backend/SchoolManagement/obj/Debug/net8.0/SchoolManagement.pdb
+/home/mohamed/School-Management-System/SchoolManagement/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
