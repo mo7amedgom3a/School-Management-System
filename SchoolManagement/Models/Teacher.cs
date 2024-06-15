@@ -5,6 +5,7 @@ namespace SchoolManagement.Models
 {
     public class Teacher: PersonInformation
     {
+        public int Id { get; set; }
         public string Specialization { get; set; }
 
         // Foreign Key

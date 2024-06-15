@@ -162,3 +162,16 @@
 /home/mohamed/School-Management-System/backend/SchoolManagement/obj/Debug/net8.0/refint/SchoolManagement.dll
 /home/mohamed/School-Management-System/backend/SchoolManagement/obj/Debug/net8.0/SchoolManagement.pdb
 /home/mohamed/School-Management-System/SchoolManagement/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/home/mohamed/School-Management-System/SchoolManagement/bin/Debug/net8.0/Aspire.Microsoft.EntityFrameworkCore.SqlServer.dll
+/home/mohamed/School-Management-System/SchoolManagement/bin/Debug/net8.0/Microsoft.Extensions.Configuration.Binder.dll
+/home/mohamed/School-Management-System/SchoolManagement/bin/Debug/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+/home/mohamed/School-Management-System/SchoolManagement/bin/Debug/net8.0/Microsoft.Extensions.Diagnostics.HealthChecks.dll
+/home/mohamed/School-Management-System/SchoolManagement/bin/Debug/net8.0/Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions.dll
+/home/mohamed/School-Management-System/SchoolManagement/bin/Debug/net8.0/Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore.dll
+/home/mohamed/School-Management-System/SchoolManagement/bin/Debug/net8.0/Microsoft.Extensions.Logging.Abstractions.dll
+/home/mohamed/School-Management-System/SchoolManagement/bin/Debug/net8.0/OpenTelemetry.dll
+/home/mohamed/School-Management-System/SchoolManagement/bin/Debug/net8.0/OpenTelemetry.Api.dll
+/home/mohamed/School-Management-System/SchoolManagement/bin/Debug/net8.0/OpenTelemetry.Api.ProviderBuilderExtensions.dll
+/home/mohamed/School-Management-System/SchoolManagement/bin/Debug/net8.0/OpenTelemetry.Extensions.Hosting.dll
+/home/mohamed/School-Management-System/SchoolManagement/bin/Debug/net8.0/MySqlConnector.dll
+/home/mohamed/School-Management-System/SchoolManagement/bin/Debug/net8.0/Pomelo.EntityFrameworkCore.MySql.dll
