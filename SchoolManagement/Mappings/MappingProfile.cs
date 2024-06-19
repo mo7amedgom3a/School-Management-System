@@ -32,6 +32,14 @@ namespace SchoolManagement.Profiles
                 .ReverseMap();
 
             CreateMap<StudentCourse, StudentCourseCreateUpdateDto>().ReverseMap();
+
+                CreateMap<StudentHomework, StudentsHomeworkDto>()
+                .ForMember(dest => dest.StudentName, opt => opt.MapFrom(src => $"{src.Student.FirstName} {src.Student.LastName}"))
+                .ForMember(dest => dest.HomeworkTitle, opt => opt.MapFrom(src => src.Homework.Title))
+                .ReverseMap();
+
+            CreateMap<StudentHomework, StudentsHomeworkCreateUpdateDto>().ReverseMap();
+
         }
     }
 }
