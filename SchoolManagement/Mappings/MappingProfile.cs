@@ -16,6 +16,8 @@ namespace SchoolManagement.Profiles
             CreateMap<Course, CourseDto>().ReverseMap();
             CreateMap<Course, CourseCreateUpdateDto>().ReverseMap();
 
+            CreateMap<Teacher, TeacherDto>().ReverseMap();
+            CreateMap<Teacher, TeacherCreateUpdateDto>().ReverseMap();
         }
     }
 }

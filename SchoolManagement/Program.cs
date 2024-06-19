@@ -32,6 +32,9 @@ builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<ICourseService, CourseService>();
 
+builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
+builder.Services.AddScoped<ITeacherService, TeacherService>();
+
 // Add AutoMapper and scan the assembly for profiles
 builder.Services.AddAutoMapper(typeof(StudentProfile).Assembly);
 builder.Services.AddAutoMapper(typeof(MappingProfile));
