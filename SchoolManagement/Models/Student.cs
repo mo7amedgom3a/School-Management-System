@@ -10,10 +10,8 @@ namespace SchoolManagement.Models
         public DateTime BirthDate { get; set; }
         public string Address { get; set; }
         public string ImgUrl { get; set; }
-        // Foreign Keys
-        public int GradeId { get; set; }
-        public Grade Grade { get; set; }
 
+        // Foreign Keys
         public int DeptId { get; set; }
         public Department Department { get; set; }
 

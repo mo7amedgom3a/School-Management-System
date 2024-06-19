@@ -13,7 +13,6 @@ namespace SchoolManagement.Data
         public DbSet<Student> Students { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Department> Departments { get; set; }
-        public DbSet<Grade> Grades { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Homework> Homeworks { get; set; }
         public DbSet<Exam> Exams { get; set; }
@@ -33,10 +32,6 @@ namespace SchoolManagement.Data
                 .HasKey(sc => new { sc.StudentId, sc.CourseId });
 
             // Defining relationships
-            modelBuilder.Entity<Student>()
-                .HasOne(s => s.Grade)
-                .WithMany(g => g.Students)
-                .HasForeignKey(s => s.GradeId);
 
             modelBuilder.Entity<Student>()
                 .HasOne(s => s.Department)
