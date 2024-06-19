@@ -8,16 +8,17 @@ namespace SchoolManagement.Profiles
     {
         public MappingProfile()
         {
-            // Department Mappings
             CreateMap<Department, DepartmentDto>().ReverseMap();
             CreateMap<Department, DepartmentCreateUpdateDto>().ReverseMap();
 
-            // Course Mappings
             CreateMap<Course, CourseDto>().ReverseMap();
             CreateMap<Course, CourseCreateUpdateDto>().ReverseMap();
 
             CreateMap<Teacher, TeacherDto>().ReverseMap();
             CreateMap<Teacher, TeacherCreateUpdateDto>().ReverseMap();
+
+            CreateMap<Homework, HomeworkDto>().ReverseMap();
+            CreateMap<Homework, HomeworkCreateUpdateDto>().ReverseMap();
         }
     }
 }
