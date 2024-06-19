@@ -10,7 +10,6 @@ namespace SchoolManagement.Dtos
         public DateTime EnrollDate { get; set; }
         public string Address { get; set; }
         public string ImgUrl { get; set; }
-        public int GradeId { get; set; }
         public int DeptId { get; set; }
         public int CourseGrade { get; set; }  
         public string DepartmentName { get; set; }  

@@ -18,7 +18,7 @@ namespace SchoolManagement.Repositories
 
         public async Task<IEnumerable<Student>> GetAllStudentsAsync()
         {
-            return await _context.Students.ToListAsync();
+            return await _context.Students.Include(s => s.Department).ToListAsync();
         }
 
         public async Task<Student> GetStudentByIdAsync(int id)
