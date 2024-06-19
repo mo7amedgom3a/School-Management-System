@@ -38,6 +38,15 @@ builder.Services.AddScoped<ITeacherService, TeacherService>();
 builder.Services.AddScoped<IHomeworkRepository, HomeworkRepository>();
 builder.Services.AddScoped<IHomeworkService, HomeworkService>();
 
+builder.Services.AddScoped<IExamRepository, ExamRepository>();
+builder.Services.AddScoped<IExamService, ExamService>();
+
+builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
+builder.Services.AddScoped<IAttendanceService, AttendanceService>();
+
+builder.Services.AddScoped<IStudentCourseRepository, StudentCourseRepository>();
+builder.Services.AddScoped<IStudentCourseService, StudentCourseService>();
+
 // Add AutoMapper and scan the assembly for profiles
 builder.Services.AddAutoMapper(typeof(StudentProfile).Assembly);
 builder.Services.AddAutoMapper(typeof(MappingProfile));
