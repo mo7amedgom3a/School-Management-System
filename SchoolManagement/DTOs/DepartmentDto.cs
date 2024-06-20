@@ -1,8 +1,7 @@
 namespace SchoolManagement.Dtos
 {
-    public class DepartmentDto
+    public class DepartmentDto : DepartmentCreateUpdateDto
     {
         public int Id { get; set; }
-        public string Name { get; set; }
     }
 }

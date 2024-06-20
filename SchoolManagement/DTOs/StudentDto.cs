@@ -13,5 +13,15 @@ namespace SchoolManagement.Dtos
         public int DeptId { get; set; }
         public string CurrentYear { get; set; }
         public string DepartmentName { get; set; }  
+
+        public double TotalGrade { get; set; }
+        public int NumberOfCourses { get; set; }
+        public List<StudentCourseDto> CourseGrades { get; set; }
+
+        public int CompletedHomeworkCount { get; set; }
+        public int PendingHomeworkCount { get; set; }
+        public List<string> CourseNames { get; set; }
+        public List<TeacherDto> CourseTeachers { get; set; }
+        public List<ExamDto> CourseExams { get; set; }
     }
 }

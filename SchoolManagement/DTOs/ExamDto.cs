@@ -10,5 +10,6 @@ namespace SchoolManagement.Dtos
         public TimeSpan Time { get; set; }
         public int CourseId { get; set; }
         public int TeacherId { get; set; }
+        public string CourseName {get; set; }
     }
 }

@@ -14,5 +14,6 @@ namespace SchoolManagement.Models
         public ICollection<Homework> Homeworks { get; set; }
         public ICollection<Exam> Exams { get; set; }
         public ICollection<Attendance> Attendances { get; set; }
+        public Teacher Teacher {get; set; }
     }
 }

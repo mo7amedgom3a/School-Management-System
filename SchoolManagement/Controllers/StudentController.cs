@@ -1,7 +1,6 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Dtos;
-using SchoolManagement.Models;
 using SchoolManagement.Services.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -21,14 +20,15 @@ namespace SchoolManagement.Controllers
             _mapper = mapper;
         }
 
+        // GET: api/student
         [HttpGet]
         public async Task<ActionResult<IEnumerable<StudentDto>>> GetAllStudents()
         {
             var students = await _studentService.GetAllStudentsAsync();
-            var studentDtos = _mapper.Map<IEnumerable<StudentDto>>(students);
-            return Ok(studentDtos);
+            return Ok(students);
         }
 
+        // GET: api/student/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<StudentDto>> GetStudentById(int id)
         {
@@ -37,42 +37,38 @@ namespace SchoolManagement.Controllers
             {
                 return NotFound();
             }
-            var studentDto = _mapper.Map<StudentDto>(student);
-            return Ok(studentDto);
+            return Ok(student);
         }
 
+        // POST: api/student
         [HttpPost]
-        public async Task<ActionResult<StudentDto>> AddStudent(StudentCreateUpdateDto studentDto)
+        public async Task<ActionResult<StudentDto>> CreateStudent([FromBody] StudentCreateUpdateDto studentDto)
         {
-            var student = _mapper.Map<Student>(studentDto);
-            var createdStudent = await _studentService.AddStudentAsync(student);
-            var createdStudentDto = _mapper.Map<StudentDto>(createdStudent);
-            return CreatedAtAction(nameof(GetStudentById), new { id = createdStudentDto.Id }, createdStudentDto);
+            var createdStudent = await _studentService.CreateStudentAsync(studentDto);
+            return CreatedAtAction(nameof(GetStudentById), new { id = createdStudent.Id }, createdStudent);
         }
 
+        // PUT: api/student/{id}
         [HttpPut("{id}")]
-        public async Task<ActionResult<StudentDto>> UpdateStudent(int id, StudentCreateUpdateDto studentDto)
+        public async Task<IActionResult> UpdateStudent(int id, [FromBody] StudentCreateUpdateDto studentDto)
         {
-            var student = await _studentService.GetStudentByIdAsync(id);
-            if (student == null)
+            var result = await _studentService.UpdateStudentAsync(id, studentDto);
+            if (!result)
             {
                 return NotFound();
             }
-            _mapper.Map(studentDto, student);
-            var updatedStudent = await _studentService.UpdateStudentAsync(student);
-            var updatedStudentDto = _mapper.Map<StudentDto>(updatedStudent);
-            return Ok(updatedStudentDto);
+            return NoContent();
         }
 
+        // DELETE: api/student/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStudent(int id)
         {
-            var student = await _studentService.GetStudentByIdAsync(id);
-            if (student == null)
+            var result = await _studentService.DeleteStudentAsync(id);
+            if (!result)
             {
                 return NotFound();
             }
-            await _studentService.DeleteStudentAsync(id);
             return NoContent();
         }
     }
