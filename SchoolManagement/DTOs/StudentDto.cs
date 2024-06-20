@@ -11,7 +11,7 @@ namespace SchoolManagement.Dtos
         public string Address { get; set; }
         public string ImgUrl { get; set; }
         public int DeptId { get; set; }
-        public int CourseGrade { get; set; }  
+        public string CurrentYear { get; set; }
         public string DepartmentName { get; set; }  
     }
 }

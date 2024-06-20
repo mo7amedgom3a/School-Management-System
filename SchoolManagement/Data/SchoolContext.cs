@@ -20,6 +20,8 @@ namespace SchoolManagement.Data
         public DbSet<StudentHomework> StudentHomeworks { get; set; }
         public DbSet<StudentCourse> StudentCourses { get; set; }
 
+        public DbSet<Salary> Salaries { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -97,6 +99,11 @@ namespace SchoolManagement.Data
                 .HasOne(sc => sc.Course)
                 .WithMany(c => c.StudentCourses)
                 .HasForeignKey(sc => sc.CourseId);
+
+            modelBuilder.Entity<Salary>()
+                .HasOne(s => s.Teacher)
+                .WithMany(t => t.Salaries)
+                .HasForeignKey(s => s.TeacherId);
 
             // Configuring data types for MySQL compatibility
             modelBuilder.Entity<Department>().Property(d => d.Name).HasColumnType("varchar(100)");

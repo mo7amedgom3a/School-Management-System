@@ -40,6 +40,12 @@ namespace SchoolManagement.Profiles
 
             CreateMap<StudentHomework, StudentsHomeworkCreateUpdateDto>().ReverseMap();
 
+            CreateMap<Salary, SalaryDto>()
+                .ForMember(dest => dest.TeacherName, opt => opt.MapFrom(src => $"{src.Teacher.FirstName} {src.Teacher.LastName}"))
+                .ReverseMap();
+                
+            CreateMap<Salary, SalaryCreateUpdateDto>().ReverseMap();
+
         }
     }
 }

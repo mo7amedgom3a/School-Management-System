@@ -11,6 +11,8 @@ namespace SchoolManagement.Models
         public string Address { get; set; }
         public string ImgUrl { get; set; }
 
+        public string  CurrentYear { get; set; } // first year, second year, third year, fourth year ...
+
         // Foreign Keys
         public int DeptId { get; set; }
         public Department Department { get; set; }
