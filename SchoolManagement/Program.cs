@@ -53,6 +53,8 @@ builder.Services.AddScoped<IStudentsHomeworkService, StudentsHomeworkService>();
 builder.Services.AddScoped<ISalaryRepository, SalaryRepository>();
 builder.Services.AddScoped<ISalaryService, SalaryService>();
 
+builder.Services.AddScoped<IAdminService, AdminService>();
+
 // Add AutoMapper and scan the assembly for profiles
 builder.Services.AddAutoMapper(typeof(StudentProfile).Assembly);
 builder.Services.AddAutoMapper(typeof(MappingProfile));

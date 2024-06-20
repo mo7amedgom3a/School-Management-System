@@ -4,7 +4,7 @@ namespace SchoolManagement.Models
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }
-        public string Status { get; set; }
+        public Boolean Status { get; set; } // True for Present, False for Absent
 
         // Foreign Keys
         public int StudentId { get; set; }
