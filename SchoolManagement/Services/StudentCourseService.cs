@@ -3,24 +3,29 @@ using SchoolManagement.Repositories.Interfaces;
 using SchoolManagement.Services.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using SchoolManagement.Dtos;
 
 namespace SchoolManagement.Services
 {
     public class StudentCourseService : IStudentCourseService
     {
         private readonly IStudentCourseRepository _studentCourseRepository;
+        private readonly IMapper _mapper;
 
-        public StudentCourseService(IStudentCourseRepository studentCourseRepository)
+        public StudentCourseService(IStudentCourseRepository studentCourseRepository, IMapper mapper)
         {
             _studentCourseRepository = studentCourseRepository;
+            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<StudentCourse>> GetAllStudentCoursesAsync()
+        public async Task<IEnumerable<StudentCourseDto>> GetAllStudentCoursesAsync()
         {
             return await _studentCourseRepository.GetAllAsync();
         }
 
-        public async Task<StudentCourse> GetStudentCourseByIdAsync(int studentId, int courseId)
+        public async Task<StudentCourseDto> GetStudentCourseByIdAsync(int studentId, int courseId)
         {
             return await _studentCourseRepository.GetByIdAsync(studentId, courseId);
         }

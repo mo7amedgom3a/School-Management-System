@@ -1,36 +1,44 @@
 using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Data;
+using SchoolManagement.Dtos;
 using SchoolManagement.Models;
 using SchoolManagement.Repositories.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper.QueryableExtensions;
+using AutoMapper;
 
 namespace SchoolManagement.Repositories
 {
     public class AttendanceRepository : IAttendanceRepository
     {
         private readonly SchoolContext _context;
+         private readonly IMapper _mapper;
 
-        public AttendanceRepository(SchoolContext context)
+        public AttendanceRepository(SchoolContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
-
-        public async Task<IEnumerable<Attendance>> GetAllAsync()
+        public async Task<IEnumerable<AttendanceDto>> GetAllAsync()
         {
             return await _context.Attendances
                 .Include(a => a.Student)
                 .Include(a => a.Course)
+                .ProjectTo<AttendanceDto>(_mapper.ConfigurationProvider) // AutoMapper projection
                 .ToListAsync();
         }
 
-        public async Task<Attendance> GetByIdAsync(int id)
+        public async Task<AttendanceDto> GetByIdAsync(int id)
         {
             return await _context.Attendances
                 .Include(a => a.Student)
                 .Include(a => a.Course)
-                .FirstOrDefaultAsync(a => a.Id == id);
+                .Where(a => a.Id == id)
+                .ProjectTo<AttendanceDto>(_mapper.ConfigurationProvider) // AutoMapper projection
+                .FirstOrDefaultAsync();
         }
+
 
         public async Task<Attendance> AddAsync(Attendance attendance)
         {

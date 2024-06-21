@@ -4,26 +4,38 @@ using SchoolManagement.Models;
 using SchoolManagement.Repositories.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using SchoolManagement.Dtos;
 
 namespace SchoolManagement.Repositories
 {
     public class CourseRepository : ICourseRepository
     {
         private readonly SchoolContext _context;
+        private readonly IMapper _mapper;
 
-        public CourseRepository(SchoolContext context)
+        public CourseRepository(SchoolContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Course>> GetAllAsync()
+         public async Task<IEnumerable<CourseDto>> GetAllAsync()
         {
-            return await _context.Courses.ToListAsync();
+            return await _context.Courses
+                .Include(c => c.Department)
+                .ProjectTo<CourseDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
         }
 
-        public async Task<Course> GetByIdAsync(int id)
+        public async Task<CourseDto> GetByIdAsync(int id)
         {
-            return await _context.Courses.FindAsync(id);
+            return await _context.Courses
+                .Include(c => c.Department)
+                .Where(c => c.Id == id)
+                .ProjectTo<CourseDto>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<Course> AddAsync(Course course)

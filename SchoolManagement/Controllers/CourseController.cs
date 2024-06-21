@@ -21,30 +21,28 @@ namespace SchoolManagement.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/course
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CourseDto>>> GetAllCourses()
         {
             var courses = await _courseService.GetAllCoursesAsync();
-            var courseDtos = _mapper.Map<IEnumerable<CourseDto>>(courses);
-            return Ok(courseDtos);
+            return Ok(courses);
         }
 
-        // GET: api/course/{id}
+        // GET: api/courses/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<CourseDto>> GetCourseById(int id)
         {
             var course = await _courseService.GetCourseByIdAsync(id);
             if (course == null)
+            {
                 return NotFound();
-
-            var courseDto = _mapper.Map<CourseDto>(course);
-            return Ok(courseDto);
+            }
+            return Ok(course);
         }
 
         // POST: api/course
         [HttpPost]
-        public async Task<ActionResult<CourseDto>> AddCourse(CourseCreateUpdateDto courseDto)
+        public async Task<ActionResult<Course>> AddCourse(CourseCreateUpdateDto courseDto)
         {
             var course = _mapper.Map<Course>(courseDto);
             var createdCourse = await _courseService.AddCourseAsync(course);

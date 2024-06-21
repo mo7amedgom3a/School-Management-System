@@ -1,26 +1,29 @@
+using SchoolManagement.Dtos;
 using SchoolManagement.Models;
 using SchoolManagement.Repositories.Interfaces;
 using SchoolManagement.Services.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using AutoMapper;
 namespace SchoolManagement.Services
 {
     public class AttendanceService : IAttendanceService
     {
         private readonly IAttendanceRepository _attendanceRepository;
+        private readonly IMapper _mapper;
 
-        public AttendanceService(IAttendanceRepository attendanceRepository)
+        public AttendanceService(IAttendanceRepository attendanceRepository, IMapper mapper)
         {
             _attendanceRepository = attendanceRepository;
+            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Attendance>> GetAllAttendancesAsync()
+        public async Task<IEnumerable<AttendanceDto>> GetAllAttendancesAsync()
         {
             return await _attendanceRepository.GetAllAsync();
         }
 
-        public async Task<Attendance> GetAttendanceByIdAsync(int id)
+        public async Task<AttendanceDto> GetAttendanceByIdAsync(int id)
         {
             return await _attendanceRepository.GetByIdAsync(id);
         }

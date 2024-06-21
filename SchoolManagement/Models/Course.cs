@@ -3,7 +3,7 @@ namespace SchoolManagement.Models
     public class Course
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         // Foreign Key
         public int DeptId { get; set; }

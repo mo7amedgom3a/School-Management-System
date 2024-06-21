@@ -11,11 +11,11 @@ namespace SchoolManagement.Profiles
             CreateMap<Department, DepartmentDto>().ReverseMap();
             CreateMap<Department, DepartmentCreateUpdateDto>().ReverseMap();
 
-            CreateMap<Course, CourseDto>().ReverseMap();
-            CreateMap<Course, CourseCreateUpdateDto>().ReverseMap();
-
             CreateMap<Teacher, TeacherDto>().ReverseMap();
             CreateMap<Teacher, TeacherCreateUpdateDto>().ReverseMap();
+
+            CreateMap<Course, CourseDto>()
+                .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.Department.Name));
 
             CreateMap<Homework, HomeworkDto>().ReverseMap();
             CreateMap<Homework, HomeworkCreateUpdateDto>().ReverseMap();
@@ -23,15 +23,19 @@ namespace SchoolManagement.Profiles
             CreateMap<Exam, ExamDto>().ReverseMap();
             CreateMap<Exam, ExamCreateUpdateDto>().ReverseMap();
 
-            CreateMap<Attendance, AttendanceDto>().ReverseMap();
-            CreateMap<Attendance, AttendanceCreateUpdateDto>().ReverseMap();
+            CreateMap<Attendance, AttendanceDto>()
+                .ForMember(dest => dest.StudentName, opt => opt.MapFrom(src => src.Student.FirstName + " " + src.Student.LastName))
+                .ForMember(dest => dest.CourseName, opt => opt.MapFrom(src => src.Course.Name));
 
             CreateMap<StudentCourse, StudentCourseDto>()
                 .ForMember(dest => dest.StudentName, opt => opt.MapFrom(src => $"{src.Student.FirstName} {src.Student.LastName}"))
                 .ForMember(dest => dest.CourseName, opt => opt.MapFrom(src => src.Course.Name))
                 .ReverseMap();
 
-            CreateMap<StudentCourse, StudentCourseCreateUpdateDto>().ReverseMap();
+                CreateMap<StudentCourse, StudentCourseDto>()
+                .ForMember(dest => dest.StudentName, opt => opt.MapFrom(src => src.Student.FirstName + " " + src.Student.LastName))
+                .ForMember(dest => dest.CourseName, opt => opt.MapFrom(src => src.Course.Name))
+                .ForMember(dest => dest.StudentMark, opt => opt.MapFrom(src => src.StudentMark));
 
                 CreateMap<StudentHomework, StudentsHomeworkDto>()
                 .ForMember(dest => dest.StudentName, opt => opt.MapFrom(src => $"{src.Student.FirstName} {src.Student.LastName}"))
