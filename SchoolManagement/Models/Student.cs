@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 namespace SchoolManagement.Models
 {
     public class Student: PersonInformation
@@ -7,6 +9,9 @@ namespace SchoolManagement.Models
         // Foreign Keys
         public int DeptId { get; set; }
         public Department Department { get; set; }
+
+
+
 
         // Navigation Properties
         public ICollection<StudentCourse> StudentCourses { get; set; }

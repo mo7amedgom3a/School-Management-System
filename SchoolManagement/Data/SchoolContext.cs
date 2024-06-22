@@ -1,11 +1,14 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Models;
+using Microsoft.AspNetCore.Identity;
+using System.Reflection.Emit;
 
 namespace SchoolManagement.Data
 {
-    public class SchoolContext : DbContext
+    public class SchoolContext : IdentityDbContext
     {
-        public SchoolContext(DbContextOptions<SchoolContext> options)
+        public SchoolContext(DbContextOptions options)
             : base(options)
         {
         }
@@ -25,7 +28,7 @@ namespace SchoolManagement.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
+            
             // Configuring composite keys
             modelBuilder.Entity<StudentHomework>()
                 .HasKey(sh => new { sh.StudentId, sh.HomeworkId });
@@ -34,21 +37,27 @@ namespace SchoolManagement.Data
                 .HasKey(sc => new { sc.StudentId, sc.CourseId });
 
             // Defining relationships
-
             modelBuilder.Entity<Student>()
                 .HasOne(s => s.Department)
                 .WithMany(d => d.Students)
                 .HasForeignKey(s => s.DeptId);
+
 
             modelBuilder.Entity<Teacher>()
                 .HasOne(t => t.Department)
                 .WithMany(d => d.Teachers)
                 .HasForeignKey(t => t.DeptId);
 
+
             modelBuilder.Entity<Course>()
                 .HasOne(c => c.Department)
                 .WithMany(d => d.Courses)
                 .HasForeignKey(c => c.DeptId);
+
+            modelBuilder.Entity<Course>()
+                .HasOne(c => c.Teacher)
+                .WithMany(t => t.Courses)
+                .HasForeignKey(c => c.TeacherId);
 
             modelBuilder.Entity<Homework>()
                 .HasOne(h => h.Teacher)
@@ -105,6 +114,7 @@ namespace SchoolManagement.Data
                 .WithMany(t => t.Salaries)
                 .HasForeignKey(s => s.TeacherId);
 
+ 
             // Configuring data types for MySQL compatibility
             modelBuilder.Entity<Department>().Property(d => d.Name).HasColumnType("varchar(100)");
             modelBuilder.Entity<Student>().Property(s => s.FirstName).HasColumnType("varchar(100)");
