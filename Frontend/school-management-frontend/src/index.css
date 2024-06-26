@@ -1,0 +1,55 @@
+/* Font Imports */
+@import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@100..900&family=IBM+Plex+Sans:wght@100..700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* General Styles */
+body {
+  font-family: 'IBM Plex Sans', sans-serif;
+  background-color: #f5f5f5; /* Light grey background for the app */
+  color: #333; /* Default text color */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Libre Franklin', sans-serif;
+}
+
+a {
+  color: #007bff; /* Default link color */
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.text-muted {
+  color: #6c757d; /* Muted text color */
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Utility Classes */
+.mt-4 { margin-top: 1rem; }
+.mt-6 { margin-top: 1.5rem; }
+.mt-8 { margin-top: 2rem; }
+
+.mb-4 { margin-bottom: 1rem; }
+.mb-6 { margin-bottom: 1.5rem; }
+.mb-8 { margin-bottom: 2rem; }
+
+.p-4 { padding: 1rem; }
+.p-6 { padding: 1.5rem; }
+.p-8 { padding: 2rem; }

@@ -1,0 +1,118 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* General styles */
+
+.home-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.home-header {
+  margin-bottom: 40px;
+}
+
+.home-header h1 {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+}
+
+.home-header p {
+  font-size: 1.2em;
+  color: #555;
+}
+
+.home-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.home-image {
+  max-width: 40%;
+  margin-right: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.home-content {
+  max-width: 50%;
+  text-align: left;
+}
+
+.home-content h2 {
+  font-size: 1.8em;
+  margin-bottom: 10px;
+}
+
+.home-content p {
+  font-size: 1em;
+  color: #666;
+}
+
+.features-section {
+  margin-top: 50px;
+}
+
+.features-container {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 30px;
+}
+
+.feature-item {
+  text-align: center;
+  max-width: 250px;
+}
+
+.feature-icon {
+  margin-bottom: 15px;
+  color: #007bff; /* Primary color for the icons */
+}
+
+.feature-item h3 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.feature-item p {
+  font-size: 1em;
+  color: #666;
+}

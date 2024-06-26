@@ -21,19 +21,15 @@ public class AuthService : IAuthService
         _context = context;
         _configuration = configuration;
     }
-    public async Task<string> GenerateJwtToken(IdentityUser user)
+    public async Task<string> GenerateJwtToken(IdentityUser user, string role)
     {
         var claims = new[]
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(ClaimTypes.NameIdentifier, user.Id)
+            new Claim(ClaimTypes.NameIdentifier, user.Id),
+            new Claim(ClaimTypes.Role, role) // add role to the token
         };
-        var role = await _userManager.GetRolesAsync(user);
-        foreach (var r in role)
-        {
-            claims.Append(new Claim(ClaimTypes.Role, r));
-        }
         var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
@@ -68,7 +64,8 @@ public class AuthService : IAuthService
                 Address = studentRegisterDTO.Address,
                 ImgUrl = studentRegisterDTO.ImgUrl,
                 DeptId = studentRegisterDTO.DeptId,
-                CurrentYear = studentRegisterDTO.CurrentYear
+                CurrentYear = studentRegisterDTO.CurrentYear,
+                UserId = user.Id
             };
             _context.Students.Add(student);
             await _context.SaveChangesAsync();
@@ -92,7 +89,8 @@ public class AuthService : IAuthService
                 FirstName = teacherRegisterDTO.FirstName,
                 LastName = teacherRegisterDTO.LastName,
                 Specialization = teacherRegisterDTO.Specialization,
-                DeptId = teacherRegisterDTO.DeptId
+                DeptId = teacherRegisterDTO.DeptId,
+                UserId = user.Id
                 
             };
             _context.Teachers.Add(teacher);
@@ -105,11 +103,11 @@ public class AuthService : IAuthService
     public async Task<string> LoginUserAsync(LoginDTO loginDTO)
     {
         var result = await _signInManager.PasswordSignInAsync(loginDTO.Username, loginDTO.Password, false, false);
-
+        var role = await _userManager.GetRolesAsync(await _userManager.FindByNameAsync(loginDTO.Username));
         if (result.Succeeded)
         {
             var user = await _userManager.FindByNameAsync(loginDTO.Username);
-            return await GenerateJwtToken(user); 
+            return await GenerateJwtToken(user, role[0]); 
         }
         return null;
     }

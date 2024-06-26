@@ -9,5 +9,6 @@ namespace SchoolManagement.Models
         public DateTime BirthDate { get; set; }
         public string Address { get; set; }
         public string ImgUrl { get; set; }
+        public string UserId { get; set; }
     }
 }

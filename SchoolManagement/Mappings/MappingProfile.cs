@@ -15,7 +15,11 @@ namespace SchoolManagement.Profiles
             CreateMap<Teacher, TeacherCreateUpdateDto>().ReverseMap();
 
             CreateMap<Course, CourseDto>()
-                .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.Department.Name));
+                .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.Department.Name))
+                .ForMember(dest => dest.TeacherName, opt => opt.MapFrom(src => src.Teacher.FirstName + " " + src.Teacher.LastName))
+                .ReverseMap();
+            
+            CreateMap<Course, CourseCreateUpdateDto>().ReverseMap();
 
             CreateMap<Homework, HomeworkDto>().ReverseMap();
             CreateMap<Homework, HomeworkCreateUpdateDto>().ReverseMap();

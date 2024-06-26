@@ -25,6 +25,7 @@ namespace SchoolManagement.Repositories
         {
             return await _context.Courses
                 .Include(c => c.Department)
+                .Include(c => c.Teacher)
                 .ProjectTo<CourseDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
         }
@@ -40,6 +41,7 @@ namespace SchoolManagement.Repositories
 
         public async Task<Course> AddAsync(Course course)
         {
+ 
             _context.Courses.Add(course);
             await _context.SaveChangesAsync();
             return course;
