@@ -1,10 +1,11 @@
 import React from 'react';
-
+import StudentRegistration from '../components/StudentRegistration';
+import Navbar from '../components/Navbar';
 const RegisterStudent = () => {
   return (
     <div>
-      <h1>Register as Student</h1>
-      {/* Form for student registration */}
+      <Navbar/>
+      <StudentRegistration />
     </div>
   );
 };

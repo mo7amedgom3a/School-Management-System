@@ -4,6 +4,8 @@ import HeroSection from '../components/HeroSection';
 import FeaturesSection from '../components/FeaturesSection';
 import Footer from '../components/Footer';
 import '../assets/css/Home.css';
+import '../assets/css/nav.css';
+
 const Home = () => {
   return (
     <div >

@@ -3,7 +3,7 @@
 
 import { Libre_Franklin } from 'next/font/google'
 import { IBM_Plex_Sans } from 'next/font/google'
-import './styles.css'
+
 
 const libre_franklin = Libre_Franklin({
   subsets: ['latin'],

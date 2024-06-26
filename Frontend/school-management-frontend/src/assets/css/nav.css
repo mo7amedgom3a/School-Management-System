@@ -1,0 +1,6 @@
+.nav {
+    background: -webkit-linear-gradient(#1a131d, #bf00f4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: 'Playfair Display', serif;
+}
