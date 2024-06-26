@@ -53,7 +53,7 @@ export default function StudentRegistration() {
 
   return (
     <div className="mx-auto max-w-md space-y-6 py-12">
-      <div className="space-y-2 text-center">
+      <div className="space-y-2 text-center pp">
         <h1 className="text-3xl font-bold">Register for School</h1>
         <p className="text-muted-foreground">Create your account to manage your school activities.</p>
       </div>

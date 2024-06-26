@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import RegisterStudent from './pages/RegisterStudent';
 import Navbar from './components/Navbar';
+import DashboardLayout from './components/DashboardLayout';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register/student" element={<RegisterStudent />} />
+        <Route path="/student/dashboard" element={<DashboardLayout />} />
       </Routes>
  </>
 
