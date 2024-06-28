@@ -8,36 +8,103 @@ import { MoveHorizontalIcon } from "./icons";
 
 export function StudentsTable() {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Students</CardTitle>
-        <CardDescription>Manage your students, take attendance, and view their information.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="hidden w-[100px] sm:table-cell">
-                <span className="sr-only">Photo</span>
-              </TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Grade</TableHead>
-              <TableHead className="hidden md:table-cell">Email</TableHead>
-              <TableHead className="hidden md:table-cell">Phone</TableHead>
-              <TableHead>Attendance</TableHead>
-              <TableHead>
-                <span className="sr-only">Actions</span>
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {students.map((student) => (
-              <StudentRow key={student.name} student={student} />
-            ))}
-          </TableBody>
-        </Table>
-      </CardContent>
-    </Card>
+    <Card x-chunk="dashboard-07-chunk-0">
+    <CardHeader>
+      <CardTitle>Students</CardTitle>
+      <CardDescription>Manage your students, take attendance, and view their information.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="hidden w-[100px] sm:table-cell">
+              <span className="sr-only">Photo</span>
+            </TableHead>
+            <TableHead>Name</TableHead>
+            <TableHead>Grade</TableHead>
+            <TableHead className="hidden md:table-cell">Email</TableHead>
+            <TableHead className="hidden md:table-cell">Phone</TableHead>
+            <TableHead>Attendance</TableHead>
+            <TableHead>
+              <span className="sr-only">Actions</span>
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow>
+            <TableCell className="hidden sm:table-cell">
+              <img
+                alt="Student photo"
+                className="aspect-square rounded-md object-cover"
+                height="64"
+                src="/placeholder.svg"
+                width="64"
+              />
+            </TableCell>
+            <TableCell className="font-medium">Liam Johnson</TableCell>
+            <TableCell>A</TableCell>
+            <TableCell className="hidden md:table-cell">liam@example.com</TableCell>
+            <TableCell className="hidden md:table-cell">(123) 456-7890</TableCell>
+            <TableCell>
+              <Badge variant="outline">Present</Badge>
+            </TableCell>
+            <TableCell>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button aria-haspopup="true" size="icon" variant="ghost">
+                    <MoveHorizontalIcon className="h-4 w-4" />
+                    <span className="sr-only">Toggle menu</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                  <DropdownMenuItem>View</DropdownMenuItem>
+                  <DropdownMenuItem>Edit</DropdownMenuItem>
+                  <DropdownMenuItem>Mark Absent</DropdownMenuItem>
+                  <DropdownMenuItem>Mark Tardy</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell className="hidden sm:table-cell">
+              <img
+                alt="Student photo"
+                className="aspect-square rounded-md object-cover"
+                height="64"
+                src="/placeholder.svg"
+                width="64"
+              />
+            </TableCell>
+            <TableCell className="font-medium">Olivia Smith</TableCell>
+            <TableCell>B+</TableCell>
+            <TableCell className="hidden md:table-cell">olivia@example.com</TableCell>
+            <TableCell className="hidden md:table-cell">(987) 654-3210</TableCell>
+            <TableCell>
+              <Badge variant="outline">Absent</Badge>
+            </TableCell>
+            <TableCell>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button aria-haspopup="true" size="icon" variant="ghost">
+                    <MoveHorizontalIcon className="h-4 w-4" />
+                    <span className="sr-only">Toggle menu</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                  <DropdownMenuItem>View</DropdownMenuItem>
+                  <DropdownMenuItem>Edit</DropdownMenuItem>
+                  <DropdownMenuItem>Mark Present</DropdownMenuItem>
+                  <DropdownMenuItem>Mark Tardy</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </CardContent>
+  </Card>
   );
 }
 
