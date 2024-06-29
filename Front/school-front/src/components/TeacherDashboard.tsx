@@ -1,36 +1,53 @@
+'use client'
+import React, { useState } from "react";
 
-import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
-import Link from "next/link"
-import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet"
-import { Button } from "@/components/ui/button"
-import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from "@/components/ui/breadcrumb"
-import { Input } from "@/components/ui/input"
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem, DropdownMenuCheckboxItem } from "@/components/ui/dropdown-menu"
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button";
+
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+
 import { Sidebar } from "@/components/Teacher/Sidebar";
 import { Header } from "@/components/Teacher/Header";
 import { FilterButton } from "@/components/Teacher/FilterButton";
 import { StudentsTable } from "@/components/Teacher/StudentTable";
+import {HomeWork} from "@/components/Teacher/home-work"; // Import GradeList component
+import {TeacherExam} from "@/components/Teacher/teacher-exam"; // Import TeacherExamList component
+import {StudentGrade} from "@/components/Teacher/student-grade"; // Import StudentGradeList component
+
 export function TeacherDashboard() {
+  const [activeTab, setActiveTab] = useState("students"); // State to track active tab
+
+  // Function to render the active component based on the current state
+  const renderActiveComponent = () => {
+    switch (activeTab) {
+      case "HomeWork":
+        return <HomeWork />;
+      case "exams":
+        return <TeacherExam />;
+      case "student-grades":
+        return <StudentGrade />;
+      case "students":
+      default:
+        return <StudentsTable />;
+    }
+  };
+
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
-      <Sidebar/>
+
+      <Sidebar setActiveTab={setActiveTab} />
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
-      <Header/>
+        <Header setActiveTab={setActiveTab} />
         <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-          <Tabs defaultValue="students">
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
             <div className="flex items-center">
               <TabsList>
                 <TabsTrigger value="students">Students</TabsTrigger>
-                <TabsTrigger value="grades">Grades</TabsTrigger>
+                <TabsTrigger value="HomeWork">HomeWorks</TabsTrigger>
                 <TabsTrigger value="exams">Exams</TabsTrigger>
-                <TabsTrigger value="homework">Homework</TabsTrigger>
+                <TabsTrigger value="student-grades">Student Grades</TabsTrigger>
               </TabsList>
               <div className="ml-auto flex items-center gap-2">
-                <FilterButton/>
+                <FilterButton />
                 <Button size="sm" variant="outline" className="h-8 gap-1">
                   <ImportIcon className="h-3.5 w-3.5" />
                   <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Export</span>
@@ -41,15 +58,14 @@ export function TeacherDashboard() {
                 </Button>
               </div>
             </div>
-            <TabsContent value="students">
-              <StudentsTable/>
-            </TabsContent>
+            {renderActiveComponent()} 
           </Tabs>
         </main>
       </div>
     </div>
   )
 }
+
 function ImportIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
