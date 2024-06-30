@@ -15,12 +15,15 @@ namespace SchoolManagement.Services.Interfaces
     
         Task<double> GetTotalGradeForStudentAsync(int studentId);
         Task<int> GetNumberOfCoursesForStudentAsync(int studentId);
-        Task<List<StudentCourseDto>> GetGradesForStudentInCoursesAsync(int studentId);
+        Task<List<CourseGradeDto>> GetGradesForStudentInCoursesAsync(int studentId);
 
         Task<int> GetCompletedHomeworkCountForStudentAsync(int studentId);
         Task<int> GetPendingHomeworkCountForStudentAsync(int studentId);
         Task<List<string>> GetCourseNamesForStudentAsync(int studentId);
-        Task<List<TeacherDto>> GetCourseTeachersForStudentAsync(int studentId);
+        Task<List<CourseTeacher>> GetCourseTeachersForStudentAsync(int studentId);
         Task<List<ExamDto>> GetCourseExamsForStudentAsync(int studentId);
+        Task<int> GetClassAttendanceForStudentAsync(int studentId);
+        Task<int> GetClassMissedForStudentAsync(int studentId);
+        Task<List<StudentHomeWorkDto>> GetHomeworksForStudentAsync(int studentId);
     }
 }

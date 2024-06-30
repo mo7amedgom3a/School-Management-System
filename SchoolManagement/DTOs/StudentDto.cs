@@ -16,12 +16,16 @@ namespace SchoolManagement.Dtos
 
         public double TotalGrade { get; set; }
         public int NumberOfCourses { get; set; }
-        public List<StudentCourseDto> CourseGrades { get; set; }
+        public List<CourseGradeDto> CourseGrades { get; set; }
 
         public int CompletedHomeworkCount { get; set; }
         public int PendingHomeworkCount { get; set; }
+        public int ClassAttendance { get; set; }
+        public int ClassMissed { get; set; }
         public List<string> CourseNames { get; set; }
-        public List<TeacherDto> CourseTeachers { get; set; }
+        public List<CourseTeacher> CourseTeachers { get; set; }
         public List<ExamDto> CourseExams { get; set; }
+        public List<StudentHomeWorkDto> Homeworks { get; set; }
+
     }
 }

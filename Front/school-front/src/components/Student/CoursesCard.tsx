@@ -1,8 +1,18 @@
-// src/components/CoursesCard.tsx
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 
-export function CoursesCard() {
+interface CourseTeachers {
+  teacherName: string;
+  courseName: string;
+  courseId: number;
+
+}
+interface CoursesCardProps {
+  courseTeachers: CourseTeachers[];
+}
+
+
+export function CoursesCard({ courseTeachers }: CoursesCardProps) {
   return (
     <Card>
       <CardHeader>
@@ -15,30 +25,17 @@ export function CoursesCard() {
             <TableRow>
               <TableHead>Course</TableHead>
               <TableHead>Professor</TableHead>
-              <TableHead>Credits</TableHead>
+              <TableHead>Course-Id</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell className="font-medium">Introduction to Computer Science</TableCell>
-              <TableCell>Dr. Jane Doe</TableCell>
-              <TableCell>3</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="font-medium">Calculus I</TableCell>
-              <TableCell>Dr. John Smith</TableCell>
-              <TableCell>4</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="font-medium">English Composition</TableCell>
-              <TableCell>Ms. Sarah Lee</TableCell>
-              <TableCell>3</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="font-medium">Introduction to Psychology</TableCell>
-              <TableCell>Dr. Michael Brown</TableCell>
-              <TableCell>3</TableCell>
-            </TableRow>
+            {courseTeachers.map((courseTeacher) => (
+              <TableRow key={courseTeacher.courseId}>
+                <TableCell>{courseTeacher.courseName}</TableCell>
+                <TableCell>{courseTeacher.teacherName}</TableCell>
+                <TableCell>{courseTeacher.courseId}</TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </CardContent>

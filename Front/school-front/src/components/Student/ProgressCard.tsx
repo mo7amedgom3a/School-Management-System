@@ -1,7 +1,16 @@
 // src/components/ProgressCard.tsx
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
+interface courseGrades {
+  courseName: string;
+  studentMark: number;
+}
+interface ProgressCardProps {
+  CourseGrades: courseGrades[];
+  totalGrade: number;
 
-export function ProgressCard() {
+}
+export function ProgressCard({CourseGrades, totalGrade}: ProgressCardProps) {
   return (
     <Card>
       <CardHeader>
@@ -9,20 +18,27 @@ export function ProgressCard() {
         <CardDescription>Your overall academic progress</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="grid gap-4">
-          <div className="flex items-center justify-between">
-            <div className="font-medium">GPA</div>
-            <div className="text-2xl font-bold">3.8</div>
-          </div>
-          <div className="flex items-center justify-between">
-            <div className="font-medium">Courses Completed</div>
-            <div className="text-2xl font-bold">45</div>
-          </div>
-          <div className="flex items-center justify-between">
-            <div className="font-medium">Courses Remaining</div>
-            <div className="text-2xl font-bold">15</div>
-          </div>
+        <div style={{ marginBottom: '1rem' }}>
+          <strong>Total Grade:</strong> {totalGrade}
         </div>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Course</TableHead>
+              <TableHead>Grade</TableHead>
+              <TableHead>Student Mark</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {CourseGrades.map((courseGrade) => (
+              <TableRow key={courseGrade.courseName}>
+                <TableCell>{courseGrade.courseName}</TableCell>
+                <TableCell>{courseGrade.totalGrade}</TableCell>
+                <TableCell>{courseGrade.studentMark}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </CardContent>
     </Card>
   );

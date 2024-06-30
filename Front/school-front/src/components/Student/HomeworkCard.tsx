@@ -2,54 +2,51 @@
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-
-export function HomeworkCard() {
+interface homeworks{
+  title: string;
+  description: string;
+  dueDate: string;
+  courseName: string;
+  status: string;
+}
+export function HomeworkCard({HomeWorks}:Homeworks[]) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Homework</CardTitle>
-        <CardDescription>Your current homework assignments</CardDescription>
+        <CardTitle>Homeworks</CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Assignment</TableHead>
+              
+              <TableHead>Title</TableHead>
+              <TableHead>description</TableHead>
+              <TableHead>Course</TableHead>
               <TableHead>Due Date</TableHead>
               <TableHead>Status</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell className="font-medium">CS101 Problem Set 3</TableCell>
-              <TableCell>2023-06-30</TableCell>
-              <TableCell>
-                <Badge variant="outline">Completed</Badge>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="font-medium">Calculus I Homework 4</TableCell>
-              <TableCell>2023-07-07</TableCell>
-              <TableCell>
-                <Badge variant="outline">Incomplete</Badge>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="font-medium">English Essay Draft</TableCell>
-              <TableCell>2023-07-15</TableCell>
-              <TableCell>
-                <Badge variant="outline">Incomplete</Badge>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="font-medium">Psychology Reflection Paper</TableCell>
-              <TableCell>2023-07-21</TableCell>
-              <TableCell>
-                <Badge variant="outline">Incomplete</Badge>
-              </TableCell>
-            </TableRow>
+            {HomeWorks.map((homework, index) => (
+              
+              <TableRow key={index}>
+                
+                <TableCell>{homework.title}</TableCell>
+                <TableCell>{homework.description}</TableCell>
+                <TableCell>{homework.courseName}</TableCell>
+                <TableCell>{homework.dueDate}</TableCell>
+                <TableCell>
+                  <Badge color={(homework.status === "Completed" ||homework.status === "Done") ? "success" : "danger"}>
+                    {homework.status}
+                  </Badge>
+                </TableCell>
+
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
+        
       </CardContent>
     </Card>
   );

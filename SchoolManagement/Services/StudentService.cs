@@ -57,7 +57,12 @@ namespace SchoolManagement.Services
             studentDto.PendingHomeworkCount = await GetPendingHomeworkCountForStudentAsync(studentDto.Id);
             studentDto.CourseNames = await GetCourseNamesForStudentAsync(studentDto.Id);
             studentDto.CourseTeachers = await GetCourseTeachersForStudentAsync(studentDto.Id);
+
             studentDto.CourseExams = await GetCourseExamsForStudentAsync(studentDto.Id);
+            studentDto.ClassAttendance = await GetClassAttendanceForStudentAsync(studentDto.Id);
+            studentDto.ClassMissed = await GetClassMissedForStudentAsync(studentDto.Id);
+            studentDto.Homeworks = await GetHomeworksForStudentAsync(studentDto.Id);
+
 
             return studentDto;
         }
@@ -101,6 +106,19 @@ namespace SchoolManagement.Services
         }
 
         // Existing methods for additional student details
+        public async Task<int> GetClassAttendanceForStudentAsync(int studentId)
+        {
+            return await _context.Attendances
+                                 .Where(a => a.StudentId == studentId && a.Status)
+                                 .CountAsync();
+        }
+        public async Task<int> GetClassMissedForStudentAsync(int studentId)
+        {
+            return await _context.Attendances
+                                 .Where(a => a.StudentId == studentId && !a.Status)
+                                 .CountAsync();
+        }
+
         public async Task<double> GetTotalGradeForStudentAsync(int studentId)
         {
             return await _context.StudentCourses
@@ -114,12 +132,11 @@ namespace SchoolManagement.Services
                                  .CountAsync(sc => sc.StudentId == studentId);
         }
 
-        public async Task<List<StudentCourseDto>> GetGradesForStudentInCoursesAsync(int studentId)
+        public async Task<List<CourseGradeDto>> GetGradesForStudentInCoursesAsync(int studentId)
         {
             return await _context.StudentCourses
                                  .Where(sc => sc.StudentId == studentId)
-                                 .Include(sc => sc.Course)
-                                 .Select(sc => new StudentCourseDto
+                                 .Select(sc => new CourseGradeDto
                                  {
                                      CourseId = sc.CourseId,
                                      CourseName = sc.Course.Name,
@@ -129,17 +146,32 @@ namespace SchoolManagement.Services
         }
 
         // New methods for additional statistics
+        public async Task<List<StudentHomeWorkDto>> GetHomeworksForStudentAsync(int studentId)
+        {
+            return await _context.StudentHomeworks
+                                 .Where(sh => sh.StudentId == studentId)
+                                 .Select(sh => new StudentHomeWorkDto
+                                 {
+                                     Title = sh.Homework.Title,
+                                     Description = sh.Homework.Description,
+                                     DueDate = sh.Homework.DueDate,
+                                     FileUrl = sh.Homework.FileUrl,
+                                     CourseName = sh.Homework.Course.Name,
+                                     Status = sh.Status
+                                 })
+                                 .ToListAsync();
+        }
         public async Task<int> GetCompletedHomeworkCountForStudentAsync(int studentId)
         {
             return await _context.StudentHomeworks
-                                 .Where(sh => sh.StudentId == studentId && sh.Status == "Completed")
+                                 .Where(sh => sh.StudentId == studentId && (sh.Status == "Completed" || sh.Status == "Done"))
                                  .CountAsync();
         }
 
         public async Task<int> GetPendingHomeworkCountForStudentAsync(int studentId)
         {
             return await _context.StudentHomeworks
-                                 .Where(sh => sh.StudentId == studentId && sh.Status == "Pending")
+                                 .Where(sh => sh.StudentId == studentId && (sh.Status == "Pending" || sh.Status == "Not Completed"))
                                  .CountAsync();
         }
 
@@ -152,24 +184,23 @@ namespace SchoolManagement.Services
                                  .ToListAsync();
         }
 
-        public async Task<List<TeacherDto>> GetCourseTeachersForStudentAsync(int studentId)
+        public async Task<List<CourseTeacher>> GetCourseTeachersForStudentAsync(int studentId)
         {
             return await _context.Courses
                                  .Where(c => c.StudentCourses.Any(sc => sc.StudentId == studentId))
-                                 .Include(c => c.Teacher)
-                                 .Select(c => new TeacherDto
+                                 .Select(c => new CourseTeacher
                                  {
-                                     Id = c.Teacher.Id,
-                                     FirstName = c.Teacher.FirstName,
-                                     LastName = c.Teacher.LastName,
-                                     Specialization = c.Teacher.Specialization
+                                     CourseId = c.Id,
+                                     CourseName = c.Name,
+                                     TeacherId = c.TeacherId,
+                                     TeacherName = c.Teacher.FirstName + " " + c.Teacher.LastName
                                  })
                                  .ToListAsync();
         }
 
         public async Task<List<ExamDto>> GetCourseExamsForStudentAsync(int studentId)
         {
-            return await _context.Exams
+             return await _context.Exams
                                  .Where(e => e.Course.StudentCourses.Any(sc => sc.StudentId == studentId))
                                  .Select(e => new ExamDto
                                  {
@@ -183,6 +214,7 @@ namespace SchoolManagement.Services
                                      CourseName = e.Course.Name
                                  })
                                  .ToListAsync();
+
         }
     }
 }

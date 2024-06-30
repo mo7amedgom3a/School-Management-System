@@ -1,7 +1,10 @@
 // src/components/AttendanceCard.tsx
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-
-export function AttendanceCard() {
+interface AttendanceCardProps {
+  classAttendance: number;
+  classMissed: number;
+}
+export function AttendanceCard({ classAttendance, classMissed }: AttendanceCardProps) {
   return (
     <Card>
       <CardHeader>
@@ -12,11 +15,11 @@ export function AttendanceCard() {
         <div className="grid gap-4">
           <div className="flex items-center justify-between">
             <div className="font-medium">Classes Attended</div>
-            <div className="text-2xl font-bold">125</div>
+            <div className="text-2xl font-bold">{classAttendance}</div>
           </div>
           <div className="flex items-center justify-between">
             <div className="font-medium">Classes Missed</div>
-            <div className="text-2xl font-bold">15</div>
+            <div className="text-2xl font-bold">{classMissed}</div>
           </div>
         </div>
       </CardContent>

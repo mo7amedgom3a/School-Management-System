@@ -43,13 +43,16 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("Student", policy => policy.RequireRole("Student"));
 });
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("CorsPolicy",
-        builder => builder.AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader());
-});
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowSpecificOrigin",
+            builder =>
+            {
+                builder.WithOrigins("http://localhost:3000") // Frontend URL
+                       .AllowAnyHeader()
+                       .AllowAnyMethod();
+            });
+    });
 builder.Services.AddAuthentication();
 
 builder.Services.AddSwaggerGen(c =>
@@ -123,7 +126,7 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.UseStaticFiles();
-
+app.UseCors("AllowSpecificOrigin"); // Use the CORS policy
 app.UseRouting();
 
 app.UseAuthentication();
