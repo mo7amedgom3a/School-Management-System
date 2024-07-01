@@ -4,7 +4,7 @@ namespace SchoolManagement.Models
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }
-        public Boolean Status { get; set; }
+        public bool Status { get; set; }
         public int StudentId { get; set; }
         public int CourseId { get; set; }
 

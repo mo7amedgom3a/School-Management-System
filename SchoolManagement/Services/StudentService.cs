@@ -157,7 +157,8 @@ namespace SchoolManagement.Services
                                      DueDate = sh.Homework.DueDate,
                                      FileUrl = sh.Homework.FileUrl,
                                      CourseName = sh.Homework.Course.Name,
-                                     Status = sh.Status
+                                     Status = sh.Status,
+                                     HomeworkId = sh.HomeworkId
                                  })
                                  .ToListAsync();
         }

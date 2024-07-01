@@ -22,11 +22,19 @@ interface CourseGrades {
   studentMark: number;
 }
 interface homeworks{
+  homeworkId: number;
   title: string;
   description: string;
   dueDate: string;
   courseName: string;
   status: string;
+}
+interface courseExams{
+  name: string;
+  status: string;
+  maxMark: number;
+  date: string;
+  courseName: string;
 }
 
 interface StudentData {
@@ -48,7 +56,7 @@ interface StudentData {
   pendingHomeworkCount: number;
   courseNames: string[];
   courseTeachers: CourseTeachers[];
-  courseExams: any[];
+  courseExams: courseExams[];
   classAttendance: number;
   classMissed: number;
   homeworks: homeworks[];
@@ -84,8 +92,8 @@ export function StudentComponent({id}) {
           <ProgressCard CourseGrades={studentData.courseGrades} totalGrade={studentData.totalGrade}/>
           <AttendanceCard classAttendance={studentData.classAttendance} classMissed={studentData.classMissed}/>
           <HomeworkCard HomeWorks={studentData.homeworks}/>
-          <ExamsCard />
-          <UploadHomeworkCard />
+          <ExamsCard CourseExams={studentData.courseExams}/>
+          <UploadHomeworkCard HomeWorks={studentData.homeworks} studentId={studentData.id} />
         </div>
       </main>
     </div>

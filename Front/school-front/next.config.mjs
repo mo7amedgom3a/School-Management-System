@@ -5,8 +5,6 @@ const nextConfig = {
     async rewrite() {
         return [
             {
-                source: '/api/:path*',
-                destination: 'http://localhost:5143/api/:path*', // Proxy to Backend
                 headers: [
                     { key: "Access-Control-Allow-Credentials", value: "true" },
                     { key: "Access-Control-Allow-Origin", value: "*" }, // replace this your actual origin

@@ -1,39 +1,127 @@
 'use client'
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router"; // To get the teacher ID from the route
 
 import { Button } from "@/components/ui/button";
-
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-
 import { Sidebar } from "@/components/Teacher/Sidebar";
 import { Header } from "@/components/Teacher/Header";
 import { FilterButton } from "@/components/Teacher/FilterButton";
-import { StudentsTable } from "@/components/Teacher/StudentTable";
-import {HomeWork} from "@/components/Teacher/home-work"; // Import GradeList component
-import {TeacherExam} from "@/components/Teacher/teacher-exam"; // Import TeacherExamList component
-import {StudentGrade} from "@/components/Teacher/student-grade"; // Import StudentGradeList component
+import { StudentTable } from "@/components/Teacher/StudentTable";
+import { HomeWork } from "@/components/Teacher/home-work";
+import { TeacherExam } from "@/components/Teacher/teacher-exam";
+import { StudentGrade } from "@/components/Teacher/student-grade";
+import LoadingPage from "./loadingPage";
 
-export function TeacherDashboard() {
-  const [activeTab, setActiveTab] = useState("students"); // State to track active tab
+// Interfaces for data types
+interface Student {
+  Id: number;
+  deptId: number;
+  courseId: number;
+  firstName: string;
+  lastName: string;
+  departmentName: string;
+  courseName: string;
+}
+
+interface Homework {
+  id: number;
+  title: string;
+  description: string;
+  dueDate: string;
+  courseId: number;
+  courseName: string;
+}
+
+interface Exam {
+  id: number;
+  name: string;
+  maxMark: number;
+  title: string;
+  date: string;
+  time: string;
+}
+
+
+interface Grade {
+  courseName: string;
+  studentName: string;
+  grade: number;
+}
+
+// API fetch functions
+const fetchStudents = async (teacherId: number): Promise<Student[]> => {
+  const response = await fetch(`http://localhost:5143/api/TeacherDashboard/${teacherId}/students`);
+  return response.json();
+};
+
+const fetchHomeworks = async (teacherId: number): Promise<Homework[]> => {
+  const response = await fetch(`http://localhost:5143/api/TeacherDashboard/${teacherId}/homeworks`);
+  return response.json();
+};
+
+const fetchExams = async (teacherId: number): Promise<Exam[]> => {
+  const response = await fetch(`http://localhost:5143/api/TeacherDashboard/${teacherId}/exams`);
+  return await response.json();
+};
+const fetchGrades = async (teacherId: number): Promise<Grade[]> => {
+  const response = await fetch(`http://localhost:5143/api/TeacherDashboard/${teacherId}/grades`);
+  return await response.json();
+}
+
+
+
+// Main component
+export function TeacherDashboard({id}) {
+  const [activeTab, setActiveTab] = useState("students");
+  const [students, setStudents] = useState<Student[]>([]);
+  const [homeworks, setHomeworks] = useState<Homework[]>([]);
+  const [exams, setExams] = useState<Exam[]>([]);
+  const [grades, setGrades] = useState<Grade[]>([]);
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (id) {
+      const teacherId = Number(id);
+      
+      // Fetch data when the component mounts
+      Promise.all([
+        fetchStudents(teacherId),
+        fetchHomeworks(teacherId),
+        fetchExams(teacherId),
+        fetchGrades(teacherId)
+      ]).then(([studentsData, homeworksData, examsData, gradesData]) => {
+        setStudents(studentsData);
+        setHomeworks(homeworksData);
+        setExams(examsData);
+        setGrades(gradesData);
+        setLoading(false);
+      });
+    }
+  }, [id]);
+
+  if (loading) {
+    return <LoadingPage />;
+  }
 
   // Function to render the active component based on the current state
   const renderActiveComponent = () => {
     switch (activeTab) {
       case "HomeWork":
-        return <HomeWork />;
+        return <HomeWork homeworks={homeworks} teacherId={id} />;
       case "exams":
-        return <TeacherExam />;
+        return <TeacherExam exams={exams} />;
       case "student-grades":
-        return <StudentGrade />;
+        return <StudentGrade grades={grades} />;
       case "students":
       default:
-        return <StudentsTable />;
+        return <StudentTable students={students} />;
     }
   };
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
-
       <Sidebar setActiveTab={setActiveTab} />
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
         <Header setActiveTab={setActiveTab} />
@@ -58,7 +146,7 @@ export function TeacherDashboard() {
                 </Button>
               </div>
             </div>
-            {renderActiveComponent()} 
+            {renderActiveComponent()}
           </Tabs>
         </main>
       </div>
@@ -66,42 +154,19 @@ export function TeacherDashboard() {
   )
 }
 
+// Placeholder components for icons
 function ImportIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      className="h-4 w-4"
-      {...props}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M12 4v16m8-8H4"
-      />
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-4 w-4" {...props}>
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
     </svg>
-  )
+  );
 }
 
 function PlusIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      className="h-4 w-4"
-      {...props}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-      />
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-4 w-4" {...props}>
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
     </svg>
-  )
+  );
 }

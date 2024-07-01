@@ -2,7 +2,16 @@
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 
-export function ExamsCard() {
+interface ExamsCardProps {
+  courseExams: {
+    name: string;
+    status: string;
+    maxMark: number;
+    date: string;
+    courseName: string;
+  }[];
+}
+export function ExamsCard({ CourseExams }: ExamsCardProps) {
   return (
     <Card>
       <CardHeader>
@@ -13,27 +22,23 @@ export function ExamsCard() {
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead>Course</TableHead>
               <TableHead>Exam</TableHead>
               <TableHead>Date</TableHead>
+              <TableHead>Max Mark</TableHead>
+              <TableHead>Status</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell className="font-medium">Computer Science Midterm</TableCell>
-              <TableCell>2023-07-01</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="font-medium">Calculus I Final</TableCell>
-              <TableCell>2023-07-15</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="font-medium">English Composition Essay</TableCell>
-              <TableCell>2023-07-20</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="font-medium">Psychology Final</TableCell>
-              <TableCell>2023-07-30</TableCell>
-            </TableRow>
+            {CourseExams.map((exam) => (
+              <TableRow key={exam.name}>
+                <TableCell>{exam.courseName}</TableCell>
+                <TableCell>{exam.name}</TableCell>
+                <TableCell>{exam.date}</TableCell>
+                <TableCell>{exam.maxMark}</TableCell>
+                <TableCell>{exam.status}</TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </CardContent>

@@ -7,6 +7,7 @@ namespace SchoolManagement.Dtos
         public int HomeworkId { get; set; }
         public DateTime SubmitDate { get; set; }
         public string Status { get; set; }
+        public string FileUrl { get; set; }
         public string StudentName { get; set; }
         public string HomeworkTitle { get; set; }
     }

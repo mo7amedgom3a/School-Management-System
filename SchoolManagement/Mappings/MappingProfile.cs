@@ -30,6 +30,7 @@ namespace SchoolManagement.Profiles
             CreateMap<Attendance, AttendanceDto>()
                 .ForMember(dest => dest.StudentName, opt => opt.MapFrom(src => src.Student.FirstName + " " + src.Student.LastName))
                 .ForMember(dest => dest.CourseName, opt => opt.MapFrom(src => src.Course.Name));
+            CreateMap<Attendance, AttendanceCreateUpdateDto>().ReverseMap();
 
             CreateMap<StudentCourse, StudentCourseDto>()
                 .ForMember(dest => dest.StudentName, opt => opt.MapFrom(src => $"{src.Student.FirstName} {src.Student.LastName}"))

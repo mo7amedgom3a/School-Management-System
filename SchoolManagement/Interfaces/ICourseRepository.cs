@@ -12,5 +12,6 @@ namespace SchoolManagement.Repositories.Interfaces
         Task<Course> AddAsync(Course course);
         Task<Course> UpdateAsync(Course course);
         Task DeleteAsync(int id);
+        
     }
 }

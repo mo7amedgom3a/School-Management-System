@@ -15,7 +15,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
-
 var connectionString = "Server=localhost;Database=SchoolDB;User=root;Password=2003";
 var serverVersion = new MySqlServerVersion(new Version());
 builder.Services.AddDbContext<SchoolContext>(optionBuilder => {

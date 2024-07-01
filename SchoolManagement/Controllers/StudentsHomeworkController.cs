@@ -42,14 +42,44 @@ namespace SchoolManagement.Controllers
         }
 
         // POST: api/studentshomework
-        [HttpPost]
-        public async Task<ActionResult<StudentsHomeworkDto>> AddStudentsHomework(StudentsHomeworkCreateUpdateDto studentsHomeworkDto)
-        {
-            var studentsHomework = _mapper.Map<StudentHomework>(studentsHomeworkDto);
-            var createdStudentsHomework = await _studentsHomeworkService.AddStudentsHomeworkAsync(studentsHomework);
-            var createdStudentsHomeworkDto = _mapper.Map<StudentsHomeworkDto>(createdStudentsHomework);
-            return CreatedAtAction(nameof(GetStudentsHomeworkById), new { studentId = createdStudentsHomework.StudentId, homeworkId = createdStudentsHomework.HomeworkId }, createdStudentsHomeworkDto);
-        }
+      
+        // public async Task<ActionResult<StudentsHomeworkDto>> AddStudentsHomework([FromForm] StudentsHomeworkCreateUpdateDto studentsHomeworkDto, [FromForm] IFormFile file)
+        // {
+        //     if (file == null || file.Length == 0)
+        //     {
+        //         return BadRequest("No file uploaded.");
+        //     }
+
+        //     // Generate a unique filename and save the file to the server
+        //     var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+        //     var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads");
+        //     var filePath = Path.Combine(uploadsPath, fileName);
+        //     if (!Directory.Exists(uploadsPath))
+        //     {
+        //         Directory.CreateDirectory(uploadsPath);
+        //     }
+
+        //     using (var stream = new FileStream(filePath, FileMode.Create))
+        //     {
+        //         await file.CopyToAsync(stream);
+        //     }
+
+        //     // Map the DTO to the entity
+        //     var studentsHomework = _mapper.Map<StudentHomework>(studentsHomeworkDto);
+            
+
+        //     // Store the file path
+        //     studentsHomework.FileUrl = $"/Uploads/{fileName}";
+
+        //     // Save the homework details in the database
+        //     var createdStudentsHomework = await _studentsHomeworkService.AddStudentsHomeworkAsync(studentsHomework);
+
+        //     // Map the created entity to the DTO
+        //     var createdStudentsHomeworkDto = _mapper.Map<StudentsHomeworkDto>(createdStudentsHomework);
+
+        //     return CreatedAtAction(nameof(GetStudentsHomeworkById), new { studentId = createdStudentsHomework.StudentId, homeworkId = createdStudentsHomework.HomeworkId }, createdStudentsHomeworkDto);
+        // }
+
 
         // PUT: api/studentshomework/{studentId}/{homeworkId}
         [HttpPut("{studentId}/{homeworkId}")]
