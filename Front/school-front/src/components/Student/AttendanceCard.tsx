@@ -13,11 +13,11 @@ export function AttendanceCard({ classAttendance, classMissed }: AttendanceCardP
       </CardHeader>
       <CardContent>
         <div className="grid gap-4">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between" style={{color:'green',}}>
             <div className="font-medium">Classes Attended</div>
             <div className="text-2xl font-bold">{classAttendance}</div>
           </div>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between" style={{color:'red',}} >
             <div className="font-medium">Classes Missed</div>
             <div className="text-2xl font-bold">{classMissed}</div>
           </div>

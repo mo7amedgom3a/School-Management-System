@@ -15,7 +15,7 @@ import LoadingPage from "./loadingPage";
 
 // Interfaces for data types
 interface Student {
-  Id: number;
+  id: number;
   deptId: number;
   courseId: number;
   firstName: string;
@@ -36,17 +36,26 @@ interface Homework {
 interface Exam {
   id: number;
   name: string;
+  courseId: number;
+  status: string;
+  courseName: string;
   maxMark: number;
-  title: string;
   date: string;
   time: string;
 }
 
 
 interface Grade {
+  courseId: number;
   courseName: string;
+  studentId:number;
   studentName: string;
   grade: number;
+}
+interface Course {
+  id: number;
+  name: string;
+  deptId: number;
 }
 
 // API fetch functions
@@ -68,6 +77,10 @@ const fetchGrades = async (teacherId: number): Promise<Grade[]> => {
   const response = await fetch(`http://localhost:5143/api/TeacherDashboard/${teacherId}/grades`);
   return await response.json();
 }
+const fetchCourses = async (teacherId: number): Promise<Course[]> => {
+  const response = await fetch(`http://localhost:5143/api/TeacherDashboard/${teacherId}/courses`);
+  return await response.json();
+}
 
 
 
@@ -78,6 +91,7 @@ export function TeacherDashboard({id}) {
   const [homeworks, setHomeworks] = useState<Homework[]>([]);
   const [exams, setExams] = useState<Exam[]>([]);
   const [grades, setGrades] = useState<Grade[]>([]);
+  const [courses, setCourses] = useState<Course[]>([]);
 
   const [loading, setLoading] = useState(true);
 
@@ -90,12 +104,14 @@ export function TeacherDashboard({id}) {
         fetchStudents(teacherId),
         fetchHomeworks(teacherId),
         fetchExams(teacherId),
-        fetchGrades(teacherId)
-      ]).then(([studentsData, homeworksData, examsData, gradesData]) => {
+        fetchGrades(teacherId),
+        fetchCourses(teacherId)
+      ]).then(([studentsData, homeworksData, examsData, gradesData, coursesData]) => {
         setStudents(studentsData);
         setHomeworks(homeworksData);
         setExams(examsData);
         setGrades(gradesData);
+        setCourses(coursesData);
         setLoading(false);
       });
     }
@@ -111,9 +127,9 @@ export function TeacherDashboard({id}) {
       case "HomeWork":
         return <HomeWork homeworks={homeworks} teacherId={id} />;
       case "exams":
-        return <TeacherExam exams={exams} />;
+        return <TeacherExam exams={exams} courses={courses} teacherId={id}/>;
       case "student-grades":
-        return <StudentGrade grades={grades} />;
+        return <StudentGrade grades={grades} courses={courses} teacherId={id}/>;
       case "students":
       default:
         return <StudentTable students={students} />;

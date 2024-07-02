@@ -9,8 +9,9 @@ namespace SchoolManagement.Repositories.Interfaces
     {
         Task<IEnumerable<StudentCourseDto>> GetAllAsync();
         Task<StudentCourseDto> GetByIdAsync(int studentId, int courseId);
-        Task<StudentCourse> AddAsync(StudentCourse studentCourse);
+        Task<StudentCourseCreateUpdateDto> AddAsync(StudentCourseCreateUpdateDto studentCourse);
         Task<StudentCourse> UpdateAsync(StudentCourse studentCourse);
         Task DeleteAsync(int studentId, int courseId);
+        Task<IEnumerable<StudentCourseDto>> GetStudentsByCourse(int courseId);
     }
 }

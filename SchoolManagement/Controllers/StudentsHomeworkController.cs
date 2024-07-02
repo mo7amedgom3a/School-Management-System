@@ -41,8 +41,8 @@ namespace SchoolManagement.Controllers
             return Ok(studentsHomeworkDto);
         }
 
-        // POST: api/studentshomework
-      
+        //POST: api/studentshomework
+        // [HttpPost]
         // public async Task<ActionResult<StudentsHomeworkDto>> AddStudentsHomework([FromForm] StudentsHomeworkCreateUpdateDto studentsHomeworkDto, [FromForm] IFormFile file)
         // {
         //     if (file == null || file.Length == 0)
@@ -70,6 +70,7 @@ namespace SchoolManagement.Controllers
 
         //     // Store the file path
         //     studentsHomework.FileUrl = $"/Uploads/{fileName}";
+        //     studentsHomework.SubmitDate = DateTime.Now;
 
         //     // Save the homework details in the database
         //     var createdStudentsHomework = await _studentsHomeworkService.AddStudentsHomeworkAsync(studentsHomework);

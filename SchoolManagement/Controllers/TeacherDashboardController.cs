@@ -45,5 +45,11 @@ namespace SchoolManagement.Controllers
             var grades = await _teacherService.GetGradesByTeacherIdAsync(teacherId);
             return Ok(grades);
         }
+        [HttpGet("{teacherId}/courses")]
+        public async Task<ActionResult<IEnumerable<Course>>> GetCoursesByTeacher(int teacherId)
+        {
+            var courses = await _teacherService.GetCoursesByTeacherIdAsync(teacherId);
+            return Ok(courses);
+        }
     }
 }

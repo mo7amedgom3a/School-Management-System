@@ -10,7 +10,7 @@ import axios from 'axios';
 
 // Updated Student interface
 interface Student {
-  Id: number;
+  id: number;
   deptId: number;
   courseId: number;
   firstName: string;
@@ -53,6 +53,7 @@ export function StudentTable({ students }: StudentTableProps) {
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead>id</TableHead>
               <TableHead>First Name</TableHead>
               <TableHead>Last Name</TableHead>
               <TableHead>Department</TableHead>
@@ -62,11 +63,13 @@ export function StudentTable({ students }: StudentTableProps) {
           </TableHeader>
           <TableBody>
             {students.map((student) => (
-              <TableRow key={student.Id}>
+              <TableRow key={student.id}>
+                <TableCell>{student.id}</TableCell>
                 <TableCell>{student.firstName}</TableCell>
                 <TableCell>{student.lastName}</TableCell>
                 <TableCell>{student.departmentName}</TableCell>
                 <TableCell>{student.courseName}</TableCell>
+                
                 <TableCell>
                   <DropdownMenu>
                     <DropdownMenuTrigger>
@@ -76,10 +79,10 @@ export function StudentTable({ students }: StudentTableProps) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                       <DropdownMenuLabel>Attendance</DropdownMenuLabel>
-                      <DropdownMenuItem onClick={() => updateAttendance(student.Id, student.courseId, true)}>
+                      <DropdownMenuItem onClick={() => updateAttendance(student.id, student.courseId, true)}>
                         <Button variant="outline" style={{ backgroundColor: 'green' }}>Present</Button>
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => updateAttendance(student.Id, student.courseId, false)}>
+                      <DropdownMenuItem onClick={() => updateAttendance(student.id, student.courseId, false)}>
                         <Button variant="outline" style={{ backgroundColor: 'red' }}>Absent</Button>
                       </DropdownMenuItem>
                     </DropdownMenuContent>

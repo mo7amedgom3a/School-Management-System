@@ -56,18 +56,18 @@ namespace SchoolManagement.Services
         public async Task<IEnumerable<StudentsDto>> GetStudentsByTeacherIdAsync(int teacherId)
         {
             var students = await _context.Students
-                .Join(_context.Departments, s => s.DeptId, d => d.Id, (s, d) => new { Student = s, Department = d })
-                .Join(_context.Courses, sd => sd.Department.Id, c => c.DeptId, (sd, c) => new { sd.Student, sd.Department, Course = c })
-                .Where(sd => sd.Course.TeacherId == teacherId)
-                .Select(sd => new StudentsDto
+                .Join(_context.StudentCourses, s => s.Id, sc => sc.StudentId, (s, sc) => new { Student = s, StudentCourse = sc })
+                .Join(_context.Courses, sc => sc.StudentCourse.CourseId, c => c.Id, (sc, c) => new { sc.Student, sc.StudentCourse, Course = c })
+                .Where(sc => sc.Course.TeacherId == teacherId && sc.StudentCourse.CourseId == sc.Course.Id)
+                .Select(sc => new StudentsDto
                 {
-                    Id = sd.Student.Id,
-                    deptId = sd.Department.Id,
-                    CourseId = sd.Course.Id,
-                    FirstName = sd.Student.FirstName,
-                    LastName = sd.Student.LastName,
-                    DepartmentName = sd.Department.Name,
-                    CourseName = sd.Course.Name
+                    Id = sc.Student.Id,
+                    deptId = sc.Student.DeptId,
+                    CourseId = sc.Course.Id,
+                    FirstName = sc.Student.FirstName,
+                    LastName = sc.Student.LastName,
+                    DepartmentName = sc.Student.Department.Name,
+                    CourseName = sc.Course.Name
                 })
                 .ToListAsync();
 
@@ -94,10 +94,23 @@ namespace SchoolManagement.Services
         }
 
         // Get a list of exams created by the teacher
-        public async Task<IEnumerable<Exam>> GetExamsByTeacherIdAsync(int teacherId)
+        public async Task<IEnumerable<ExamDto>> GetExamsByTeacherIdAsync(int teacherId)
         {
             return await _context.Exams
-                .Where(ex => ex.TeacherId == teacherId)
+                .Join(_context.Courses, ex => ex.CourseId, c => c.Id, (ex, c) => new { Exam = ex, Course = c })
+                .Where(ec => ec.Exam.TeacherId == teacherId)
+                .Select(ec => new ExamDto
+                {
+                    Id = ec.Exam.Id,
+                    Name = ec.Exam.Name,
+                    Status = ec.Exam.Status,
+                    MaxMark = ec.Exam.MaxMark,
+                    Date = ec.Exam.Date,
+                    Time = ec.Exam.Time,
+                    CourseId = ec.Course.Id,
+                    TeacherId = ec.Exam.TeacherId,
+                    CourseName = ec.Course.Name
+                })
                 .ToListAsync();
         }
 
@@ -112,11 +125,19 @@ namespace SchoolManagement.Services
             {
             StudentName = sc.Student.FirstName + " " + sc.Student.LastName,
             CourseName = sc.Course.Name,
-            Grade = sc.StudentCourse.StudentMark
+            Grade = sc.StudentCourse.StudentMark,
+            StudentId = sc.Student.Id,
+            courseId = sc.Course.Id
             })
             .ToListAsync();
             
             return grades;
+        }
+        public async Task<IEnumerable<Course>> GetCoursesByTeacherIdAsync(int teacherId)
+        {
+            return await _context.Courses
+                .Where(c => c.TeacherId == teacherId)
+                .ToListAsync();
         }
     }
 }

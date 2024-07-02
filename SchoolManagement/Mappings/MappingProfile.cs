@@ -24,8 +24,14 @@ namespace SchoolManagement.Profiles
             CreateMap<Homework, HomeworkDto>().ReverseMap();
             CreateMap<Homework, HomeworkCreateUpdateDto>().ReverseMap();
             
-            CreateMap<Exam, ExamDto>().ReverseMap();
-            CreateMap<Exam, ExamCreateUpdateDto>().ReverseMap();
+            CreateMap<Exam, ExamDto>()
+            .ForMember(dest => dest.CourseName, opt => opt.MapFrom(src => src.Course.Name))
+            .ReverseMap();
+            
+            CreateMap<Exam, ExamCreateUpdateDto>()
+            .ForMember(dest => dest.CourseId, opt => opt.MapFrom(src => src.Course.Id))
+            .ForMember(dest => dest.TeacherId, opt => opt.MapFrom(src => src.Teacher.Id))
+            .ReverseMap();
 
             CreateMap<Attendance, AttendanceDto>()
                 .ForMember(dest => dest.StudentName, opt => opt.MapFrom(src => src.Student.FirstName + " " + src.Student.LastName))
@@ -36,6 +42,7 @@ namespace SchoolManagement.Profiles
                 .ForMember(dest => dest.StudentName, opt => opt.MapFrom(src => $"{src.Student.FirstName} {src.Student.LastName}"))
                 .ForMember(dest => dest.CourseName, opt => opt.MapFrom(src => src.Course.Name))
                 .ReverseMap();
+            CreateMap<StudentCourse, StudentCourseCreateUpdateDto>().ReverseMap();
 
                 CreateMap<StudentCourse, StudentCourseDto>()
                 .ForMember(dest => dest.StudentName, opt => opt.MapFrom(src => src.Student.FirstName + " " + src.Student.LastName))

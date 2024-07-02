@@ -1,148 +1,53 @@
-'use client'
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router"; // To get the teacher ID from the route
-
+// src/components/StudentDashboardHeader.tsx
+import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink } from "@/components/ui/breadcrumb";
+import Link from "next/link";
+import { Input } from "@/components/ui/input";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Sidebar } from "@/components/Teacher/Sidebar";
-import { Header } from "@/components/Teacher/Header";
-import { FilterButton } from "@/components/Teacher/FilterButton";
-import { StudentsTable } from "@/components/Teacher/StudentTable";
-import { HomeWork } from "@/components/Teacher/home-work";
-import { TeacherExam } from "@/components/Teacher/teacher-exam";
-import { StudentGrade } from "@/components/Teacher/student-grade";
 
-// Interfaces for data types
-interface Student {
-  id: number;
-  name: string;
-  course: string;
-}
-
-interface Homework {
-  id: number;
-  title: string;
-  description: string;
-  dueDate: string;
-}
-
-interface Exam {
-  id: number;
-  title: string;
-  date: string;
-}
-
-interface Grade {
-  studentId: number;
-  course: string;
-  grade: string;
-}
-
-// API fetch functions
-const fetchStudents = async (teacherId: number): Promise<Student[]> => {
-  const response = await fetch(`http://localhost:5143/api/Teachers/${teacherId}/students`);
-  return response.json();
-};
-
-const fetchHomeworks = async (teacherId: number): Promise<Homework[]> => {
-  const response = await fetch(`http://localhost:5143/api/Teachers/${teacherId}/homeworks`);
-  return response.json();
-};
-
-const fetchExams = async (teacherId: number): Promise<Exam[]> => {
-  const response = await fetch(`http://localhost:5143/api/Teachers/${teacherId}/exams`);
-  return response.json();
-};
-
-const fetchGrades = async (teacherId: number): Promise<Grade[]> => {
-  const response = await fetch(`http://localhost:5143/api/Teachers/${teacherId}/grades`);
-  return response.json();
-};
-
-// Main component
-export function TeacherDashboard() {
-  const router = useRouter();
-  const { id } = router.query; // Get the teacher ID from the route
-  const [activeTab, setActiveTab] = useState("students");
-  const [students, setStudents] = useState<Student[]>([]);
-  const [homeworks, setHomeworks] = useState<Homework[]>([]);
-  const [exams, setExams] = useState<Exam[]>([]);
-  const [grades, setGrades] = useState<Grade[]>([]);
-
-  useEffect(() => {
-    if (id) {
-      const teacherId = Number(id);
-      
-      // Fetch data when the component mounts
-      fetchStudents(teacherId).then(setStudents);
-      fetchHomeworks(teacherId).then(setHomeworks);
-      fetchExams(teacherId).then(setExams);
-      fetchGrades(teacherId).then(setGrades);
-    }
-  }, [id]);
-
-  // Function to render the active component based on the current state
-  const renderActiveComponent = () => {
-    switch (activeTab) {
-      case "HomeWork":
-        return <HomeWork homeworks={homeworks} />;
-      case "exams":
-        return <TeacherExam exams={exams} />;
-      case "student-grades":
-        return <StudentGrade grades={grades} />;
-      case "students":
-      default:
-        return <StudentsTable students={students} />;
-    }
-  };
-
+export default function Header() {
   return (
-    <div className="flex min-h-screen w-full flex-col bg-muted/40">
-      <Sidebar setActiveTab={setActiveTab} />
-      <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
-        <Header setActiveTab={setActiveTab} />
-        <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-          <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <div className="flex items-center">
-              <TabsList>
-                <TabsTrigger value="students">Students</TabsTrigger>
-                <TabsTrigger value="HomeWork">HomeWorks</TabsTrigger>
-                <TabsTrigger value="exams">Exams</TabsTrigger>
-                <TabsTrigger value="student-grades">Student Grades</TabsTrigger>
-              </TabsList>
-              <div className="ml-auto flex items-center gap-2">
-                <FilterButton />
-                <Button size="sm" variant="outline" className="h-8 gap-1">
-                  <ImportIcon className="h-3.5 w-3.5" />
-                  <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Export</span>
-                </Button>
-                <Button size="sm" className="h-8 gap-1">
-                  <PlusIcon className="h-3.5 w-3.5" />
-                  <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Add</span>
-                </Button>
-              </div>
-            </div>
-            {renderActiveComponent()}
-          </Tabs>
-        </main>
+    <header className="sticky mb-4 top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+      <Breadcrumb className="hidden md:flex">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link href="#" prefetch={false}>
+                Dashboard
+              </Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <div className="relative ml-auto flex-1 md:grow-0">
+        <div className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+        <Input
+          type="search"
+          placeholder="Search..."
+          className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
+        />
       </div>
-    </div>
-  )
-}
-
-// Placeholder components for icons
-function ImportIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-4 w-4" {...props}>
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-    </svg>
-  );
-}
-
-function PlusIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-4 w-4" {...props}>
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-    </svg>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" size="icon" className="overflow-hidden rounded-full">
+            <img
+              src="/placeholder.svg"
+              width={36}
+              height={36}
+              alt="Avatar"
+              className="overflow-hidden rounded-full"
+            />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>Settings</DropdownMenuItem>
+          <DropdownMenuItem>Support</DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>Logout</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </header>
   );
 }

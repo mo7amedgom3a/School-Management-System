@@ -28,6 +28,12 @@ namespace SchoolManagement.Controllers
             var studentCourses = await _studentCourseService.GetAllStudentCoursesAsync();
             return Ok(studentCourses);
         }
+        [HttpGet("{courseId}")]
+        public async Task<ActionResult<IEnumerable<StudentCourseDto>>> GetStudentsByCourseId(int courseId)
+        {
+            var studentCourses = await _studentCourseService.GetStudentsByCourseId(courseId);
+            return Ok(studentCourses);
+        }
 
         // GET: api/studentcourses/{studentId}/{courseId}
         [HttpGet("{studentId}/{courseId}")]
@@ -43,12 +49,11 @@ namespace SchoolManagement.Controllers
 
         // POST: api/studentcourse
         [HttpPost]
-        public async Task<ActionResult<StudentCourseDto>> AddStudentCourse(StudentCourseCreateUpdateDto studentCourseDto)
+        public async Task<ActionResult<StudentCourseCreateUpdateDto>> AddStudentCourse(StudentCourseCreateUpdateDto studentCourseDto)
         {
             var studentCourse = _mapper.Map<StudentCourse>(studentCourseDto);
-            var createdStudentCourse = await _studentCourseService.AddStudentCourseAsync(studentCourse);
-            var createdStudentCourseDto = _mapper.Map<StudentCourseDto>(createdStudentCourse);
-            return CreatedAtAction(nameof(GetStudentCourseById), new { studentId = createdStudentCourse.StudentId, courseId = createdStudentCourse.CourseId }, createdStudentCourseDto);
+            var newStudentCourse = await _studentCourseService.AddStudentCourseAsync(studentCourseDto);
+            return CreatedAtAction(nameof(GetStudentCourseById), new { studentId = newStudentCourse.StudentId, courseId = newStudentCourse.CourseId }, newStudentCourse);
         }
 
         // PUT: api/studentcourse/{studentId}/{courseId}

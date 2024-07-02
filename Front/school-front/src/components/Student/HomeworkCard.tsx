@@ -19,7 +19,6 @@ export function HomeworkCard({HomeWorks}:Homeworks[]) {
         <Table>
           <TableHeader>
             <TableRow>
-              
               <TableHead>Title</TableHead>
               <TableHead>description</TableHead>
               <TableHead>Course</TableHead>
@@ -29,24 +28,20 @@ export function HomeworkCard({HomeWorks}:Homeworks[]) {
           </TableHeader>
           <TableBody>
             {HomeWorks.map((homework, index) => (
-              
               <TableRow key={index}>
-                
                 <TableCell>{homework.title}</TableCell>
                 <TableCell>{homework.description}</TableCell>
                 <TableCell>{homework.courseName}</TableCell>
                 <TableCell>{homework.dueDate}</TableCell>
                 <TableCell>
-                  <Badge color={(homework.status === "Completed" ||homework.status === "Done") ? "success" : "danger"}>
-                    {homework.status}
+                  <Badge style={{ background: homework.status === "Completed" || homework.status === "Done" || homework.status === 'Submited' ? "green" : "red" }}>
+                    {homework.status === "Completed" || homework.status === "Done" || homework.status === 'Submited' ? "Completed" : "Pending"}
                   </Badge>
                 </TableCell>
-
               </TableRow>
             ))}
           </TableBody>
         </Table>
-        
       </CardContent>
     </Card>
   );

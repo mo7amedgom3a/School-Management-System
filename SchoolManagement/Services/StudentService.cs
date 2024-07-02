@@ -148,17 +148,19 @@ namespace SchoolManagement.Services
         // New methods for additional statistics
         public async Task<List<StudentHomeWorkDto>> GetHomeworksForStudentAsync(int studentId)
         {
-            return await _context.StudentHomeworks
-                                 .Where(sh => sh.StudentId == studentId)
-                                 .Select(sh => new StudentHomeWorkDto
+            return await _context.Homeworks
+                                 .Where(hw => _context.StudentCourses
+                                                    .Any(sc => sc.StudentId == studentId && sc.CourseId == hw.CourseId))
+                                 .Select(hw => new StudentHomeWorkDto
                                  {
-                                     Title = sh.Homework.Title,
-                                     Description = sh.Homework.Description,
-                                     DueDate = sh.Homework.DueDate,
-                                     FileUrl = sh.Homework.FileUrl,
-                                     CourseName = sh.Homework.Course.Name,
-                                     Status = sh.Status,
-                                     HomeworkId = sh.HomeworkId
+                                     HomeworkId = hw.Id,
+                                     Title = hw.Title,
+                                     Description = hw.Description,
+                                     DueDate = hw.DueDate,
+                                     Status = _context.StudentHomeworks
+                                                      .Where(sh => sh.StudentId == studentId && sh.HomeworkId == hw.Id)
+                                                      .Select(sh => sh.Status)
+                                                      .FirstOrDefault()
                                  })
                                  .ToListAsync();
         }

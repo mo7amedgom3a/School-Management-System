@@ -98,9 +98,9 @@ export function UploadHomeworkCard({ HomeWorks, studentId }: Props) {
           <Input type="file" onChange={handleFileChange} />
           <Button onClick={handleUpload}>Upload</Button>
           {uploadStatus && (
-            <p className={uploadStatus === success ? 'text-green-500' : 'text-red-500'}>
-              {uploadStatus}
-            </p>
+            
+              <p style={{ color: uploadStatus === success ? 'green' : 'red' }}>{uploadStatus}</p>
+            
           )}
         </div>
       </CardContent>

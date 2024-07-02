@@ -9,8 +9,9 @@ namespace SchoolManagement.Services.Interfaces
     {
         Task<IEnumerable<StudentCourseDto>> GetAllStudentCoursesAsync();
         Task<StudentCourseDto> GetStudentCourseByIdAsync(int studentId, int courseId);
-        Task<StudentCourse> AddStudentCourseAsync(StudentCourse studentCourse);
+        Task<StudentCourseCreateUpdateDto> AddStudentCourseAsync(StudentCourseCreateUpdateDto studentCourse);
         Task<StudentCourse> UpdateStudentCourseAsync(StudentCourse studentCourse);
         Task DeleteStudentCourseAsync(int studentId, int courseId);
+        Task<IEnumerable<StudentCourseDto>> GetStudentsByCourseId(int courseId);
     }
 }

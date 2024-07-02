@@ -14,7 +14,8 @@ namespace SchoolManagement.Services.Interfaces
         Task DeleteTeacherAsync(int id);
         Task<IEnumerable<StudentsDto>> GetStudentsByTeacherIdAsync(int teacherId);
         Task<IEnumerable<HomeworksDto>> GetHomeworksByTeacherIdAsync(int teacherId);
-        Task<IEnumerable<Exam>> GetExamsByTeacherIdAsync(int teacherId);
+        Task<IEnumerable<ExamDto>> GetExamsByTeacherIdAsync(int teacherId);
         Task<IEnumerable<StudentGradeDto>> GetGradesByTeacherIdAsync(int teacherId);
+        Task<IEnumerable<Course>> GetCoursesByTeacherIdAsync(int teacherId);
     }
 }

@@ -39,11 +39,13 @@ namespace SchoolManagement.Repositories
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<StudentCourse> AddAsync(StudentCourse studentCourse)
+        public async Task<StudentCourseCreateUpdateDto> AddAsync(StudentCourseCreateUpdateDto studentCourse)
         {
-            _context.StudentCourses.Add(studentCourse);
+            var newStudentCourse = _mapper.Map<StudentCourse>(studentCourse);
+            newStudentCourse.FullMark = 100;
+            await _context.StudentCourses.AddAsync(newStudentCourse);
             await _context.SaveChangesAsync();
-            return studentCourse;
+            return _mapper.Map<StudentCourseCreateUpdateDto>(newStudentCourse);
         }
 
         public async Task<StudentCourse> UpdateAsync(StudentCourse studentCourse)
@@ -61,6 +63,16 @@ namespace SchoolManagement.Repositories
                 _context.StudentCourses.Remove(studentCourse);
                 await _context.SaveChangesAsync();
             }
+        }
+        public async Task<IEnumerable<StudentCourseDto>> GetStudentsByCourse(int courseId)
+        {
+            return await _context.Courses
+                .Include(c => c.StudentCourses)
+                .ThenInclude(sc => sc.Student)
+                .Where(c => c.Id == courseId)
+                .SelectMany(c => c.StudentCourses)
+                .ProjectTo<StudentCourseDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
         }
     }
 }

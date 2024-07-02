@@ -30,7 +30,7 @@ namespace SchoolManagement.Services
             return await _studentCourseRepository.GetByIdAsync(studentId, courseId);
         }
 
-        public async Task<StudentCourse> AddStudentCourseAsync(StudentCourse studentCourse)
+        public async Task<StudentCourseCreateUpdateDto> AddStudentCourseAsync(StudentCourseCreateUpdateDto studentCourse)
         {
             return await _studentCourseRepository.AddAsync(studentCourse);
         }
@@ -43,6 +43,10 @@ namespace SchoolManagement.Services
         public async Task DeleteStudentCourseAsync(int studentId, int courseId)
         {
             await _studentCourseRepository.DeleteAsync(studentId, courseId);
+        }
+        public async Task<IEnumerable<StudentCourseDto>> GetStudentsByCourseId(int studentId)
+        {
+            return await _studentCourseRepository.GetStudentsByCourse(studentId);
         }
     }
 }
