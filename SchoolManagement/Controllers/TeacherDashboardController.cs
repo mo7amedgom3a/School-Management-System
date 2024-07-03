@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Dtos;
 using SchoolManagement.Models;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace SchoolManagement.Controllers
 {
+    [Authorize(Roles = "Teacher")]
     [ApiController]
     [Route("api/[controller]")]
     public class TeacherDashboardController : ControllerBase

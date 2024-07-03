@@ -13,7 +13,8 @@ namespace SchoolManagement.Models
         public int DeptId { get; set; }
         public Department Department { get; set; }
 
-
+        public string UserId { get; set; }
+        public IdentityUser User { get; set; }
         // Navigation Properties
         public ICollection<Homework> Homeworks { get; set; }
         public ICollection<Exam> Exams { get; set; }

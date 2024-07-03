@@ -1,12 +1,15 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Dtos;
 using SchoolManagement.Services.Interfaces;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace SchoolManagement.Controllers
 {
+    
     [ApiController]
     [Route("api/[controller]")]
     public class StudentController : ControllerBase
@@ -21,6 +24,7 @@ namespace SchoolManagement.Controllers
         }
 
         // GET: api/student
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<StudentDto>>> GetAllStudents()
         {
@@ -29,10 +33,27 @@ namespace SchoolManagement.Controllers
         }
 
         // GET: api/student/{id}
+        [Authorize(Roles = "Student")]
+        
         [HttpGet("{id}")]
         public async Task<ActionResult<StudentDto>> GetStudentById(int id)
         {
-            var student = await _studentService.GetStudentByIdAsync(id);
+            var student = await _studentService.GetStudentByIdAsync(id); 
+            // Get the user ID from the JWT token
+            var userId = "";
+            foreach (Claim claim in User.Claims)
+            {
+                if (claim.Type == ClaimTypes.NameIdentifier)
+                {
+                    userId = claim.Value;
+                }
+            }
+         
+            //Check if the user ID matches the ID in the request
+            if (userId != student.UserId)
+            {
+                return Unauthorized(); // Return 401 Unauthorized if the user ID does not match
+            }
             if (student == null)
             {
                 return NotFound();
@@ -41,6 +62,7 @@ namespace SchoolManagement.Controllers
         }
 
         // POST: api/student
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<StudentDto>> CreateStudent([FromBody] StudentCreateUpdateDto studentDto)
         {
@@ -49,6 +71,7 @@ namespace SchoolManagement.Controllers
         }
 
         // PUT: api/student/{id}
+        [Authorize(Roles = "Student")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateStudent(int id, [FromBody] StudentCreateUpdateDto studentDto)
         {
@@ -61,6 +84,7 @@ namespace SchoolManagement.Controllers
         }
 
         // DELETE: api/student/{id}
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStudent(int id)
         {
@@ -71,5 +95,11 @@ namespace SchoolManagement.Controllers
             }
             return NoContent();
         }
+        [HttpGet("student/{username}")]
+        public async Task<int> GetStudentIdFromUsername(string username)
+        {
+            return await _studentService.GetStudentIdFromUsername(username);
+        }
     }
+
 }

@@ -36,7 +36,7 @@ namespace SchoolManagement.Controllers
 
             if (result.Succeeded)
             {
-                return Ok("Student registered successfully");
+                return Created("Student registered successfully", null);
             }
 
             foreach (var error in result.Errors)
@@ -92,6 +92,6 @@ namespace SchoolManagement.Controllers
             await _authService.LogoutUserAsync();
             return Ok("User logged out successfully");
         }
+ 
     }
-
 }

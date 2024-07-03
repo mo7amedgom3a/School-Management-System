@@ -1,13 +1,16 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Dtos;
 using SchoolManagement.Models;
 using SchoolManagement.Services.Interfaces;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace SchoolManagement.Controllers
 {
+    
     [ApiController]
     [Route("api/[controller]")]
     public class TeacherController : ControllerBase
@@ -22,6 +25,7 @@ namespace SchoolManagement.Controllers
         }
 
         // GET: api/teacher
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TeacherDto>>> GetAllTeachers()
         {
@@ -31,10 +35,24 @@ namespace SchoolManagement.Controllers
         }
 
         // GET: api/teacher/{id}
+        [Authorize(Roles = "Teacher")]
         [HttpGet("{id}")]
         public async Task<ActionResult<TeacherDto>> GetTeacherById(int id)
         {
-            var teacher = await _teacherService.GetTeacherByIdAsync(id);
+            var teacher = await _teacherService.GetTeacherByIdAsync(id);   
+            // Get the user ID from the JWT token
+            var userId = "";
+            foreach (Claim claim in User.Claims)
+            {
+                if (claim.Type == ClaimTypes.NameIdentifier)
+                {
+                    userId = claim.Value;
+                }
+            }
+            if (userId != teacher.UserId)
+            {
+                return Unauthorized();
+            }
             if (teacher == null)
                 return NotFound();
             
@@ -43,6 +61,7 @@ namespace SchoolManagement.Controllers
         }
 
         // POST: api/teacher
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<TeacherDto>> AddTeacher(TeacherCreateUpdateDto teacherDto)
         {
@@ -53,6 +72,7 @@ namespace SchoolManagement.Controllers
         }
 
         // PUT: api/teacher/{id}
+        [Authorize(Roles = "Teacher")]
         [HttpPut("{id}")]
         public async Task<ActionResult<TeacherDto>> UpdateTeacher(int id, TeacherCreateUpdateDto teacherDto)
         {
@@ -68,11 +88,20 @@ namespace SchoolManagement.Controllers
         }
 
         // DELETE: api/teacher/{id}
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTeacher(int id)
         {
             await _teacherService.DeleteTeacherAsync(id);
             return NoContent();
+        }
+        [HttpGet("Teacher/{username}")]
+        public async Task<ActionResult<int>> GetTeacherIdFromUsername(string username)
+        {
+            var teacherId = await _teacherService.GetTeacherIdFromUsername(username);
+            if (teacherId == 0)
+                return NotFound();
+            return Ok(teacherId);
         }
     }
 }

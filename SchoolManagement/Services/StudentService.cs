@@ -1,4 +1,6 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Data;
 using SchoolManagement.Dtos;
@@ -41,6 +43,7 @@ namespace SchoolManagement.Services
             return studentDtos;
         }
 
+        
         public async Task<StudentDto> GetStudentByIdAsync(int id)
         {
             var student = await _context.Students.Include(s => s.Department).FirstOrDefaultAsync(s => s.Id == id);
@@ -48,7 +51,6 @@ namespace SchoolManagement.Services
             {
                 return null;
             }
-
             var studentDto = _mapper.Map<StudentDto>(student);
             studentDto.TotalGrade = await GetTotalGradeForStudentAsync(studentDto.Id);
             studentDto.NumberOfCourses = await GetNumberOfCoursesForStudentAsync(studentDto.Id);
@@ -57,7 +59,8 @@ namespace SchoolManagement.Services
             studentDto.PendingHomeworkCount = await GetPendingHomeworkCountForStudentAsync(studentDto.Id);
             studentDto.CourseNames = await GetCourseNamesForStudentAsync(studentDto.Id);
             studentDto.CourseTeachers = await GetCourseTeachersForStudentAsync(studentDto.Id);
-
+            var user = await GetUserById(studentDto.UserId);
+            studentDto.UserName = user.UserName;
             studentDto.CourseExams = await GetCourseExamsForStudentAsync(studentDto.Id);
             studentDto.ClassAttendance = await GetClassAttendanceForStudentAsync(studentDto.Id);
             studentDto.ClassMissed = await GetClassMissedForStudentAsync(studentDto.Id);
@@ -75,6 +78,13 @@ namespace SchoolManagement.Services
 
             return _mapper.Map<StudentDto>(student);
         }
+        public async Task<IdentityUser> GetUserById(string userId)
+        {
+            return await _context.Users.FindAsync(userId);
+        }
+
+
+
 
         public async Task<bool> UpdateStudentAsync(int id, StudentCreateUpdateDto studentDto)
         {
@@ -104,6 +114,17 @@ namespace SchoolManagement.Services
 
             return true;
         }
+
+    public async Task<int> GetStudentIdFromUsername(string username)
+    {
+        var studentId = await _context.Students
+            .Join(_context.Users, s => s.UserId, u => u.Id, (s, u) => new { Student = s, User = u })
+            .Where(su => su.User.UserName == username)
+            .Select(su => su.Student.Id)
+            .SingleOrDefaultAsync();
+        
+        return studentId;
+    }
 
         // Existing methods for additional student details
         public async Task<int> GetClassAttendanceForStudentAsync(int studentId)

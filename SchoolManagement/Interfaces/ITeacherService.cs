@@ -17,5 +17,6 @@ namespace SchoolManagement.Services.Interfaces
         Task<IEnumerable<ExamDto>> GetExamsByTeacherIdAsync(int teacherId);
         Task<IEnumerable<StudentGradeDto>> GetGradesByTeacherIdAsync(int teacherId);
         Task<IEnumerable<Course>> GetCoursesByTeacherIdAsync(int teacherId);
+        Task<int> GetTeacherIdFromUsername(string username);
     }
 }

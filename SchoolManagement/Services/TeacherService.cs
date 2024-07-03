@@ -139,5 +139,15 @@ namespace SchoolManagement.Services
                 .Where(c => c.TeacherId == teacherId)
                 .ToListAsync();
         }
+    public async Task<int> GetTeacherIdFromUsername(string username)
+    {
+        var teacher = await _context.Teachers
+            .Join(_context.Users, t => t.UserId, u => u.Id, (t, u) => new { Teacher = t, User = u })
+            .Where(tu => tu.User.UserName == username)
+            .Select(tu => tu.Teacher.Id)
+            .SingleOrDefaultAsync();
+        
+        return teacher;
+    }
     }
 }

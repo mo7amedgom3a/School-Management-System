@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Dtos;
 using SchoolManagement.Services.Interfaces;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace SchoolManagement.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [ApiController]
     [Route("api/[controller]")]
     public class AdminController : ControllerBase
@@ -21,6 +23,7 @@ namespace SchoolManagement.Controllers
         [HttpGet("statistics")]
         public async Task<ActionResult<AdminStatisticsDto>> GetOverallStatistics()
         {
+            
             var stats = await _adminService.GetOverallStatisticsAsync();
             return Ok(stats);
         }

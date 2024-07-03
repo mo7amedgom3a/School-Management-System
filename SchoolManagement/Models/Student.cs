@@ -10,8 +10,8 @@ namespace SchoolManagement.Models
         public int DeptId { get; set; }
         public Department Department { get; set; }
 
-
-
+        public string UserId { get; set; }
+        public IdentityUser User { get; set; }
 
         // Navigation Properties
         public ICollection<StudentCourse> StudentCourses { get; set; }

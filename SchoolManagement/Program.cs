@@ -24,6 +24,27 @@ builder.Services.AddDbContext<SchoolContext>(optionBuilder => {
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
         .AddEntityFrameworkStores<SchoolContext>()
         .AddDefaultTokenProviders();
+builder.Services.AddAuthentication(option=>{
+    option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    option.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.SaveToken = true;
+    options.RequireHttpsMetadata = false;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = "http://localhost:5000",
+        ValidAudience = "http://localhost:5000",
+
+        IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("printf('%s','open');lgdkfnhgljgdflkflkjklhjlkflglkhhjljglgkjhlgkdfjlkjlyhglfjfldjlhjlkhd"))
+    };
+});
+
 
 builder.Services.Configure<IdentityOptions>(options =>
 {

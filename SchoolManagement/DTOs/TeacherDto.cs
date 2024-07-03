@@ -6,5 +6,7 @@ namespace SchoolManagement.Dtos
     {
         public string Specialization { get; set; }
         public int DeptId { get; set; }
+        public string UserId { get; set; }
+        
     }
 }

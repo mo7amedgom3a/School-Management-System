@@ -11,7 +11,10 @@ namespace SchoolManagement.Profiles
             CreateMap<Department, DepartmentDto>().ReverseMap();
             CreateMap<Department, DepartmentCreateUpdateDto>().ReverseMap();
 
-            CreateMap<Teacher, TeacherDto>().ReverseMap();
+            CreateMap<Teacher, TeacherDto>()
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id))
+                .ReverseMap();
+
             CreateMap<Teacher, TeacherCreateUpdateDto>().ReverseMap();
 
             CreateMap<Course, CourseDto>()

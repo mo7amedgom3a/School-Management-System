@@ -41,6 +41,10 @@ namespace SchoolManagement.Data
                 .HasOne(s => s.Department)
                 .WithMany(d => d.Students)
                 .HasForeignKey(s => s.DeptId);
+            modelBuilder.Entity<Student>()
+                .HasOne(s => s.User)
+                .WithOne()
+                .HasForeignKey<Student>(s => s.UserId);
 
 
             modelBuilder.Entity<Teacher>()
@@ -48,6 +52,10 @@ namespace SchoolManagement.Data
                 .WithMany(d => d.Teachers)
                 .HasForeignKey(t => t.DeptId);
 
+            modelBuilder.Entity<Teacher>()
+                .HasOne(t => t.User)
+                .WithOne()
+                .HasForeignKey<Teacher>(t => t.UserId);
 
             modelBuilder.Entity<Course>()
                 .HasOne(c => c.Department)
@@ -122,10 +130,12 @@ namespace SchoolManagement.Data
             modelBuilder.Entity<Student>().Property(s => s.Gender).HasColumnType("varchar(10)");
             modelBuilder.Entity<Student>().Property(s => s.Address).HasColumnType("varchar(255)");
             modelBuilder.Entity<Student>().Property(s => s.ImgUrl).HasColumnType("varchar(255)");
+            modelBuilder.Entity<Student>().Property(s => s.UserId).HasColumnType("varchar(255)");
 
             modelBuilder.Entity<Teacher>().Property(t => t.FirstName).HasColumnType("varchar(100)");
             modelBuilder.Entity<Teacher>().Property(t => t.LastName).HasColumnType("varchar(100)");
             modelBuilder.Entity<Teacher>().Property(t => t.Specialization).HasColumnType("varchar(100)");
+            modelBuilder.Entity<Teacher>().Property(t => t.UserId).HasColumnType("varchar(255)");
 
             modelBuilder.Entity<Homework>().Property(h => h.Title).HasColumnType("varchar(200)");
             modelBuilder.Entity<Homework>().Property(h => h.Description).HasColumnType("text");

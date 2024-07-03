@@ -6,13 +6,20 @@ using SchoolManagement.Services.Interfaces;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
-
-public class AuthService : IAuthService
+using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+namespace SchoolManagement.Services
+{
+    public class AuthService : IAuthService
 {
     private readonly UserManager<IdentityUser> _userManager;
     private readonly SignInManager<IdentityUser> _signInManager;
     private readonly IConfiguration _configuration;
     private readonly SchoolContext _context;
+
 
     public AuthService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, SchoolContext context, IConfiguration configuration)
     {
@@ -20,6 +27,7 @@ public class AuthService : IAuthService
         _signInManager = signInManager;
         _context = context;
         _configuration = configuration;
+
     }
     public async Task<string> GenerateJwtToken(IdentityUser user, string role)
     {
@@ -28,7 +36,7 @@ public class AuthService : IAuthService
             new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(ClaimTypes.NameIdentifier, user.Id),
-            new Claim(ClaimTypes.Role, role) // add role to the token
+            new Claim(ClaimTypes.Role, role), // add role to the token
         };
         var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -37,13 +45,13 @@ public class AuthService : IAuthService
             issuer: _configuration["Jwt:Issuer"],
             audience: _configuration["Jwt:Audience"],
             claims: claims,
-            expires: DateTime.Now.AddMinutes(30),
+            expires: DateTime.Now.AddHours(3),
             signingCredentials: creds
         );
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
-
+    
     public async Task<IdentityResult> RegisterStudentAsync(StudentRegisterDTO studentRegisterDTO)
     {
         var user = new IdentityUser { UserName = studentRegisterDTO.Username };
@@ -104,17 +112,20 @@ public class AuthService : IAuthService
     {
         var result = await _signInManager.PasswordSignInAsync(loginDTO.Username, loginDTO.Password, false, false);
         var role = await _userManager.GetRolesAsync(await _userManager.FindByNameAsync(loginDTO.Username));
+        
         if (result.Succeeded)
         {
             var user = await _userManager.FindByNameAsync(loginDTO.Username);
-            return await GenerateJwtToken(user, role[0]); 
+            return await GenerateJwtToken(user, role[0]);
+            
         }
         return null;
     }
-    
     public async Task LogoutUserAsync()
     {
         await _signInManager.SignOutAsync();
     }
 }
 
+
+}

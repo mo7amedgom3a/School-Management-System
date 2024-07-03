@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Dtos;
 using SchoolManagement.Models;
@@ -6,8 +7,10 @@ using SchoolManagement.Services.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+
 namespace SchoolManagement.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [ApiController]
     [Route("api/[controller]")]
     public class CourseController : ControllerBase

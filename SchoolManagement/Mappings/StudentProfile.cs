@@ -9,7 +9,8 @@ namespace SchoolManagement.Mappings
         public StudentProfile()
         {
             CreateMap<Student, StudentDto>()
-                .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.Department.Name));
+                .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.Department.Name))
+                .ReverseMap();
 
             CreateMap<StudentCreateUpdateDto, Student>();
         }
