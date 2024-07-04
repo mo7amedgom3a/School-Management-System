@@ -106,7 +106,13 @@ namespace SchoolManagement.Services
             var student = await _context.Students.FindAsync(id);
             if (student == null)
             {
-                return false;
+            return false;
+            }
+
+            var user = await _context.Users.FindAsync(student.UserId);
+            if (user != null)
+            {
+            _context.Users.Remove(user);
             }
 
             _context.Students.Remove(student);

@@ -63,7 +63,7 @@ namespace SchoolManagement.Controllers
 
             if (result.Succeeded)
             {
-                return Ok("Teacher registered successfully");
+                return Created("Teacher registered successfully", null);
             }
 
             foreach (var error in result.Errors)

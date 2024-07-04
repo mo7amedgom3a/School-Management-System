@@ -12,7 +12,11 @@ export function DepartmentList() {
 
   useEffect(() => {
     // Fetch departments data
-    fetch("http://localhost:5143/api/Department")
+    fetch("http://localhost:5143/api/Department",{
+      headers: new Headers({
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+      })
+    })
       .then(res => res.json())
       .then(data => setDepartments(data))
   }, [])
@@ -23,6 +27,7 @@ export function DepartmentList() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
       },
       body: JSON.stringify({
         name: newDepartment,
@@ -42,6 +47,9 @@ export function DepartmentList() {
       // Delete department
       fetch(`http://localhost:5143/api/Department/${id}`, {
         method: "DELETE",
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        }
       })
         .then(() => {
           // Update departments list

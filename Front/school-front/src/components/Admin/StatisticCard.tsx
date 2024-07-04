@@ -19,7 +19,11 @@ export function StatisticCard() {
 
   // Fetch data from the API when the component mounts
   useEffect(() => {
-    fetch("http://localhost:5143/api/Admin/statistics")
+    fetch("http://localhost:5143/api/Admin/statistics", {
+      headers: new Headers({
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+      })
+    })
       .then(response => response.json())
       .then(data => {
         setStatistics(data)
@@ -91,6 +95,24 @@ export function StatisticCard() {
         </CardHeader>
         <CardContent>
           <p className="text-xs text-muted-foreground">Average salary</p>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between pb-2">
+          <CardTitle className="text-sm font-medium">Average Student Marks</CardTitle>
+          <div className="text-2xl font-bold">{statistics.averageStudentMarks}</div>
+        </CardHeader>
+        <CardContent>
+          <p className="text-xs text-muted-foreground">Average student marks</p>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between pb-2">
+          <CardTitle className="text-sm font-medium">Total Homework Assignments</CardTitle>
+          <div className="text-2xl font-bold">{statistics.totalHomeworkAssignments}</div>
+        </CardHeader>
+        <CardContent>
+          <p className="text-xs text-muted-foreground">Total homework assignments</p>
         </CardContent>
       </Card>
     </div>

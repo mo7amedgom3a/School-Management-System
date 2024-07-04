@@ -64,6 +64,13 @@ interface StudentData {
 }
 
 export function StudentComponent({id}) {
+  const token = localStorage.getItem('authToken');
+  const decodedToken = jwtDecode(token);
+  const userRole = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+  if (userRole !== "Student" || token === null || token === undefined) {
+    alert('Unauthorized: You are not a Student.');
+    return null;
+  }
   const [studentData, setStudentData] = useState<StudentData | null>(null);
 
   useEffect(() => {
@@ -83,6 +90,16 @@ export function StudentComponent({id}) {
   if (!studentData) {
     return <LoadingPage/>;
   }
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      alert('Timeout!');
+    }, 10000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen bg-muted/40">

@@ -9,22 +9,53 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { useEffect, useState } from "react"
+import { jwtDecode } from "jwt-decode"
 
 export default function AdminDashboard() {
-
-  return (
-    <div>
-      <Header />
-
-        <StatisticCard />
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <StudentList />
-        <TeacherList />
+  const [role, setRole] = useState("");
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      const userRole = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+      setRole(userRole);
+      console.log(userRole);
+    }
+  }, []);
+  if (role !== "Admin") {
+    return (
+      <div>
+        <Header />
+        <div className="flex justify-center items-center h-screen">
+          <Card>
+            <CardHeader>
+              <CardTitle>Access Denied</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p>You do not have permission to access this page.</p>
+              <Button onClick={() => window.location.href = "/"}>Go to Home</Button>
+            </CardContent>
+          </Card>
+        </div>
       </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <CourseList />
-        <DepartmentList />
+    )
+  }
+  else{
+    return (
+      <div>
+        <Header />
+  
+          <StatisticCard />
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <StudentList />
+          <TeacherList />
+        </div>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <CourseList />
+          <DepartmentList />
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
+  
 }

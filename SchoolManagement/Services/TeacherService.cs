@@ -42,14 +42,24 @@ namespace SchoolManagement.Services
             return teacher;
         }
 
-        public async Task DeleteTeacherAsync(int id)
+        public async Task<bool> DeleteTeacherAsync(int id)
         {
             var teacher = await _context.Teachers.FindAsync(id);
-            if (teacher != null)
+            if (teacher == null)
             {
-                _context.Teachers.Remove(teacher);
-                await _context.SaveChangesAsync();
+                return false;
             }
+            else{
+                var user = await _context.Users.FindAsync(teacher.UserId);
+                if (user != null)
+                {
+                    _context.Users.Remove(user);
+                    _context.Teachers.Remove(teacher);
+                    await _context.SaveChangesAsync();
+                    return true;
+                }
+            }
+            return false;
         }
 
         // Get a list of students for the courses taught by the teacher

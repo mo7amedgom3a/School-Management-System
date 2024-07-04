@@ -96,7 +96,11 @@ namespace SchoolManagement.Services
             {
                 FirstName = teacherRegisterDTO.FirstName,
                 LastName = teacherRegisterDTO.LastName,
+                Address = teacherRegisterDTO.Address,
+                ImgUrl = teacherRegisterDTO.ImgUrl,
                 Specialization = teacherRegisterDTO.Specialization,
+                Gender = teacherRegisterDTO.Gender,
+                BirthDate = teacherRegisterDTO.BirthDate,
                 DeptId = teacherRegisterDTO.DeptId,
                 UserId = user.Id
                 

@@ -3,14 +3,18 @@ import { useEffect, useState } from "react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table"
-import { PlusIcon, TrashIcon } from "../Teacher/icons"// Assuming icons are available or can be implemented similarly.
+import { PlusIcon, TrashIcon } from "../Teacher/icons"
 
 export function TeacherList() {
   const [teachers, setTeachers] = useState([])
 
   useEffect(() => {
     // Fetch teachers data
-    fetch("http://localhost:5143/api/Teacher")
+    fetch("http://localhost:5143/api/Teacher", {
+      headers: new Headers({
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+      })
+    })
       .then(res => res.json())
       .then(data => setTeachers(data))
   }, [])

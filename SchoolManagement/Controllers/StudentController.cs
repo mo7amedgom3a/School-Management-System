@@ -24,7 +24,7 @@ namespace SchoolManagement.Controllers
         }
 
         // GET: api/student
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Teacher")]// add multiple roles {Roles = "Admin, Teacher"}
         [HttpGet]
         public async Task<ActionResult<IEnumerable<StudentDto>>> GetAllStudents()
         {
@@ -33,7 +33,7 @@ namespace SchoolManagement.Controllers
         }
 
         // GET: api/student/{id}
-        [Authorize(Roles = "Student")]
+        [Authorize(Roles = "Student, Admin, Teacher")]
         
         [HttpGet("{id}")]
         public async Task<ActionResult<StudentDto>> GetStudentById(int id)
@@ -93,7 +93,7 @@ namespace SchoolManagement.Controllers
             {
                 return NotFound();
             }
-            return NoContent();
+            return Ok();
         }
         [HttpGet("student/{username}")]
         public async Task<int> GetStudentIdFromUsername(string username)

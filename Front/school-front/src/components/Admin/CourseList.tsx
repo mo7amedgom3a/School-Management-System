@@ -39,9 +39,21 @@ export function CourseList() {
   useEffect(() => {
     // Fetch courses, departments, and teachers data
     Promise.all([
-      fetch("http://localhost:5143/api/Course").then(res => res.json()),
-      fetch("http://localhost:5143/api/Department").then(res => res.json()),
-      fetch("http://localhost:5143/api/Teacher").then(res => res.json())
+      fetch("http://localhost:5143/api/Course",{
+        headers: new Headers({
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        })
+      }).then(res => res.json()),
+      fetch("http://localhost:5143/api/Department",{
+        headers: new Headers({
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        })
+      }).then(res => res.json()),
+      fetch("http://localhost:5143/api/Teacher",{
+        headers: new Headers({
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        })
+      }).then(res => res.json())
     ]).then(([coursesData, departmentsData, teachersData]) => {
       setCourses(coursesData)
       setDepartments(departmentsData)
@@ -75,7 +87,8 @@ export function CourseList() {
     fetch("http://localhost:5143/api/Course", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
       },
       body: JSON.stringify({
         name: newCourse.name,
@@ -102,7 +115,10 @@ export function CourseList() {
 
       // Delete the course from the server
       fetch(`http://localhost:5143/api/Course/${id}`, {
-        method: "DELETE"
+        method: "DELETE",
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        }
       }).then(res => {
         if (!res.ok) {
           throw new Error("Failed to delete course")

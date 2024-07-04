@@ -23,7 +23,7 @@ namespace SchoolManagement.Controllers
             _courseService = courseService;
             _mapper = mapper;
         }
-
+        // GET: api/courses
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CourseDto>>> GetAllCourses()
         {

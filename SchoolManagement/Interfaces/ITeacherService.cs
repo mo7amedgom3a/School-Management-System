@@ -11,7 +11,7 @@ namespace SchoolManagement.Services.Interfaces
         Task<Teacher> GetTeacherByIdAsync(int id);
         Task<Teacher> AddTeacherAsync(Teacher teacher);
         Task<Teacher> UpdateTeacherAsync(Teacher teacher);
-        Task DeleteTeacherAsync(int id);
+        Task<bool> DeleteTeacherAsync(int id);
         Task<IEnumerable<StudentsDto>> GetStudentsByTeacherIdAsync(int teacherId);
         Task<IEnumerable<HomeworksDto>> GetHomeworksByTeacherIdAsync(int teacherId);
         Task<IEnumerable<ExamDto>> GetExamsByTeacherIdAsync(int teacherId);

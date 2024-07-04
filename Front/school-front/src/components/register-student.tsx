@@ -11,7 +11,9 @@ import { Select } from "@/components/ui/select"; // Import your Select component
 import Alert from '@mui/material/Alert'; // Import Alert from Material-UI or your preferred library
 import CheckIcon from '@mui/icons-material/Check'; // Import the CheckIcon for the success alert
 import { redirect } from 'next/navigation'
-import {LoginComponent} from "../components/login-component"
+import { LoginComponent } from "../components/login-component"
+import { Navigate } from 'react-router-dom';
+
 
 export function RegisterStudent() {
   const [departments, setDepartments] = useState([]);
@@ -62,32 +64,28 @@ export function RegisterStudent() {
       alert("Passwords do not match");
       return;
     }
-      const response = await fetch("http://localhost:5143/api/Auth/register/student", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+    const response = await fetch("http://localhost:5143/api/Auth/register/student", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
 
-      if (response.status === 201) {
-       
-        window.alert("Registration successful! Redirecting to login...");
-        setRegistrationSuccess(true);
-        setErrorMessage("");
-  
-        // Redirect to login page after a delay
-        setTimeout(() => {
-          redirect("/Login");
-        }, 2000); // Redirect after 2 seconds
-      }
-      else {
-        const data = await response.json();
-        console.log("Registration failed:", data);
-        const massege = "Registration failed. Please try again. and the status code is " + response.status;
-        setErrorMessage(massege);
-        setRegistrationSuccess(false);
-      }
+    if (response.status === 201) {
+
+      window.alert("Registration successful! Redirecting to login...");
+      setRegistrationSuccess(true);
+      setErrorMessage("");
+
+    }
+    else {
+      const data = await response.json();
+      console.log("Registration failed:", data);
+      const massege = "Registration failed. Please try again. and the status code is " + response.status;
+      setErrorMessage(massege);
+      setRegistrationSuccess(false);
+    }
   };
 
   return (
@@ -99,14 +97,20 @@ export function RegisterStudent() {
         </p>
       </div>
       {registrationSuccess && (
-        <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
+        <Alert severity="success">
           Registration successful! Redirecting to login...
+          <CheckIcon />
         </Alert>
       )}
+
       {errorMessage && (
         <Alert severity="error">
           {errorMessage}
         </Alert>
+      )}
+      {registrationSuccess && window.setTimeout(() => {
+        window.location.href = "/Login";
+      }, 3000
       )}
       <form onSubmit={handleSubmit}>
         <Card>
@@ -169,14 +173,17 @@ export function RegisterStudent() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="gender">Gender</Label>
-              <Input
+              <select
                 id="gender"
-                type="text"
-                placeholder="Gender"
                 value={formData.gender}
                 onChange={handleChange}
                 required
-              />
+                className="border border-gray-300 rounded px-2 py-1"
+              >
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
             </div>
             <div className="space-y-2">
               <Label htmlFor="birthDate">Date of Birth</Label>
@@ -227,13 +234,12 @@ export function RegisterStudent() {
               </select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="currentYear">Current Year</Label>
+              <Label htmlFor="currentYear"></Label>
               <Input
                 id="currentYear"
-                type="text"
+                type="hidden"
                 placeholder="Current Year"
-                value={formData.currentYear}
-                onChange={handleChange}
+                value= "first year"
                 required
               />
             </div>

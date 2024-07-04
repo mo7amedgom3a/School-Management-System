@@ -35,7 +35,7 @@ namespace SchoolManagement.Controllers
         }
 
         // GET: api/teacher/{id}
-        [Authorize(Roles = "Teacher")]
+        [Authorize(Roles = "Teacher, Admin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<TeacherDto>> GetTeacherById(int id)
         {
@@ -92,8 +92,10 @@ namespace SchoolManagement.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTeacher(int id)
         {
-            await _teacherService.DeleteTeacherAsync(id);
-            return NoContent();
+            var result =  await _teacherService.DeleteTeacherAsync(id);
+            if (!result)
+                return NotFound();
+            return Ok();
         }
         [HttpGet("Teacher/{username}")]
         public async Task<ActionResult<int>> GetTeacherIdFromUsername(string username)

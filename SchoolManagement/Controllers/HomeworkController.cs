@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SchoolManagement.Controllers
 {
-    [Authorize(Roles = "Teacher")]
+    
     [ApiController]
     [Route("api/[controller]")]
     public class HomeworkController : ControllerBase
@@ -24,6 +24,7 @@ namespace SchoolManagement.Controllers
         }
 
         // GET: api/homework
+        [Authorize(Roles = "Teacher, Student")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<HomeworkDto>>> GetAllHomeworks()
         {
@@ -35,6 +36,7 @@ namespace SchoolManagement.Controllers
         }
 
         // GET: api/homework/{id}
+        [Authorize(Roles = "Teacher, Student")]
         [HttpGet("{id}")]
         public async Task<ActionResult<HomeworkDto>> GetHomeworkById(int id)
         {
@@ -47,6 +49,7 @@ namespace SchoolManagement.Controllers
         }
 
         // POST: api/homework
+        [Authorize(Roles = "Teacher")]
         [HttpPost]
         public async Task<ActionResult<HomeworkDto>> AddHomework(HomeworkCreateUpdateDto homeworkDto)
         {
@@ -57,6 +60,7 @@ namespace SchoolManagement.Controllers
         }
 
         // PUT: api/homework/{id}
+        [Authorize(Roles = "Teacher")]
         [HttpPut("{id}")]
         public async Task<ActionResult<HomeworkDto>> UpdateHomework(int id, HomeworkCreateUpdateDto homeworkDto)
         {
@@ -72,6 +76,7 @@ namespace SchoolManagement.Controllers
         }
 
         // DELETE: api/homework/{id}
+        [Authorize(Roles = "Teacher")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteHomework(int id)
         {

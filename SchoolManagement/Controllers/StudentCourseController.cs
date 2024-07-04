@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SchoolManagement.Controllers
 {
-    [Authorize(Roles = "Teacher" )]
+    [Authorize(Roles = "Teacher, Admin" )]
     [ApiController]
     [Route("api/[controller]")]
     public class StudentCourseController : ControllerBase
@@ -37,7 +37,7 @@ namespace SchoolManagement.Controllers
             return Ok(studentCourses);
         }
 
-        // GET: api/studentcourses/{studentId}/{courseId}
+        // GET: api/studentcourses/{studentId}/{courseId}  
         [HttpGet("{studentId}/{courseId}")]
         public async Task<ActionResult<StudentCourseDto>> GetStudentCourseById(int studentId, int courseId)
         {
@@ -54,6 +54,8 @@ namespace SchoolManagement.Controllers
         public async Task<ActionResult<StudentCourseCreateUpdateDto>> AddStudentCourse(StudentCourseCreateUpdateDto studentCourseDto)
         {
             var studentCourse = _mapper.Map<StudentCourse>(studentCourseDto);
+            studentCourse.FullMark = 100;
+            studentCourse.StudentMark = 0;
             var newStudentCourse = await _studentCourseService.AddStudentCourseAsync(studentCourseDto);
             return CreatedAtAction(nameof(GetStudentCourseById), new { studentId = newStudentCourse.StudentId, courseId = newStudentCourse.CourseId }, newStudentCourse);
         }

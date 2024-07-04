@@ -12,6 +12,7 @@ import { HomeWork } from "@/components/Teacher/home-work";
 import { TeacherExam } from "@/components/Teacher/teacher-exam";
 import { StudentGrade } from "@/components/Teacher/student-grade";
 import LoadingPage from "./loadingPage";
+import { jwtDecode } from "jwt-decode";
 
 // Interfaces for data types
 interface Student {
@@ -60,32 +61,69 @@ interface Course {
 
 // API fetch functions
 const fetchStudents = async (teacherId: number): Promise<Student[]> => {
-  const response = await fetch(`http://localhost:5143/api/TeacherDashboard/${teacherId}/students`);
+  const response = await fetch(`http://localhost:5143/api/TeacherDashboard/${teacherId}/students`, {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+    }
+  });
   return response.json();
 };
 
 const fetchHomeworks = async (teacherId: number): Promise<Homework[]> => {
-  const response = await fetch(`http://localhost:5143/api/TeacherDashboard/${teacherId}/homeworks`);
+  const response = await fetch(`http://localhost:5143/api/TeacherDashboard/${teacherId}/homeworks`, {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+    }
+  });
   return response.json();
 };
 
 const fetchExams = async (teacherId: number): Promise<Exam[]> => {
-  const response = await fetch(`http://localhost:5143/api/TeacherDashboard/${teacherId}/exams`);
+  const response = await fetch(`http://localhost:5143/api/TeacherDashboard/${teacherId}/exams`, {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+    }
+  });
   return await response.json();
 };
+
 const fetchGrades = async (teacherId: number): Promise<Grade[]> => {
-  const response = await fetch(`http://localhost:5143/api/TeacherDashboard/${teacherId}/grades`);
+  const response = await fetch(`http://localhost:5143/api/TeacherDashboard/${teacherId}/grades`, {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+    }
+  });
   return await response.json();
-}
+};
+
 const fetchCourses = async (teacherId: number): Promise<Course[]> => {
-  const response = await fetch(`http://localhost:5143/api/TeacherDashboard/${teacherId}/courses`);
+  const response = await fetch(`http://localhost:5143/api/TeacherDashboard/${teacherId}/courses`, {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+    }
+  });
   return await response.json();
-}
+};
 
 
 
 // Main component
 export function TeacherDashboard({id}) {
+  const token = localStorage.getItem('authToken') ?? '';
+  const decode = jwtDecode(token);
+  const userRole = decode['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+  console.log(userRole);
+
+
+  if (userRole !== "Admin") {
+    alert('Unauthorized: You are not an admin.');
+    return null;
+  }
+
+  if (userRole !== "Teacher" || token === null || token === undefined) {
+    alert('Unauthorized: You are not a teacher.');
+    return null;
+  }
   const [activeTab, setActiveTab] = useState("students");
   const [students, setStudents] = useState<Student[]>([]);
   const [homeworks, setHomeworks] = useState<Homework[]>([]);
@@ -120,6 +158,16 @@ export function TeacherDashboard({id}) {
   if (loading) {
     return <LoadingPage />;
   }
+  // Set a timeout to show an alert after 10 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      alert('Timeout!');
+    }, 10000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
 
   // Function to render the active component based on the current state
   const renderActiveComponent = () => {

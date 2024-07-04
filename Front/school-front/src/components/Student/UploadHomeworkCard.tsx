@@ -2,7 +2,12 @@ import { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import Select from 'react-select';
+import SelectTrigger from 'react-select';
+import SelectContent from 'react-select';
+import SelectItem from 'react-select';
+import SelectValue from 'react-select';
+
 import { Button } from '@/components/ui/button';
 
 interface Homework {
@@ -60,6 +65,9 @@ export function UploadHomeworkCard({ HomeWorks, studentId }: Props) {
       const response = await fetch(`http://localhost:5143/api/StudentsHomework`, {
         method: 'POST',
         body: formData,
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        }
       });
 
       if (response.ok) {
@@ -82,18 +90,14 @@ export function UploadHomeworkCard({ HomeWorks, studentId }: Props) {
       <CardContent>
         <div className="space-y-4">
           <Label>Homework</Label>
-          <Select onValueChange={handleHomeworkSelect}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select homework" />
-            </SelectTrigger>
-            <SelectContent>
-              {HomeWorks.map((homework) => (
-                <SelectItem key={homework.title} value={homework.title}>
-                  {homework.title}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Select
+            trigger={SelectTrigger}
+            content={SelectContent}
+            item={SelectItem}
+            value={SelectValue}
+            options={HomeWorks.map(hw => ({ value: hw.title, label: hw.title }))}
+            onChange={(value) => handleHomeworkSelect(value)}
+          />
           <Label>File</Label>
           <Input type="file" onChange={handleFileChange} />
           <Button onClick={handleUpload}>Upload</Button>
