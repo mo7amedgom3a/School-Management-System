@@ -28,7 +28,8 @@ const updateAttendance = async (studentId: number, courseId: number, status: boo
     const response = await fetch(`http://localhost:5143/api/Attendance`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
       },
       body: JSON.stringify({ studentId, courseId, status , date: new Date()})
     });

@@ -100,7 +100,7 @@ export function StatisticCard() {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between pb-2">
           <CardTitle className="text-sm font-medium">Average Student Marks</CardTitle>
-          <div className="text-2xl font-bold">{statistics.averageStudentMarks}</div>
+          <div className="text-2xl font-bold">{parseInt(statistics.averageStudentMarks)}</div>
         </CardHeader>
         <CardContent>
           <p className="text-xs text-muted-foreground">Average student marks</p>

@@ -1,13 +1,11 @@
 // components/TeacherDashboard/HomeWork.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { PlusIcon, FilterIcon, MoveVerticalIcon } from "@/components/Teacher/icons";
-import axios from 'axios';
-
 
 interface Homework {
   id: number;
@@ -23,13 +21,20 @@ interface Homework {
 interface HomeWorkProps {
   homeworks: Homework[];
   teacherId: number; 
-  courseId: number;
+  courses: Course[]; // Receiving the courses from Teacher component
 }
 
-export function HomeWork({ homeworks, teacherId , courseId}: HomeWorkProps) {
+interface Course {
+  id: number;
+  name: string;
+  deptId: number;
+}
+
+export function HomeWork({ homeworks, teacherId, courses }: HomeWorkProps) {
   const [homeworkList, setHomeworkList] = useState(homeworks);
   const [newHomework, setNewHomework] = useState<Homework | null>(null); // For adding new homework
   const [editingHomeworkId, setEditingHomeworkId] = useState<number | null>(null); // For editing homework
+
   // Function to handle adding a new homework
   const handleAddHomework = () => {
     setNewHomework({
@@ -38,7 +43,7 @@ export function HomeWork({ homeworks, teacherId , courseId}: HomeWorkProps) {
       description: "",
       dueDate: "",
       teacherId,
-      courseId,
+      courseId: 0,
       courseName: "",
       fileUrl: ""
     });
@@ -48,9 +53,22 @@ export function HomeWork({ homeworks, teacherId , courseId}: HomeWorkProps) {
   const handleSaveNewHomework = async () => {
     if (newHomework) {
       try {
-        const response = await axios.post("http://localhost:5143/api/Homework", newHomework);
-        setHomeworkList([...homeworkList, response.data]);
-        setNewHomework(null);
+        const response = await fetch("http://localhost:5143/api/Homework", {
+          method: "POST",
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(newHomework)
+        });
+
+        if (response.ok) {
+          const savedHomework = await response.json();
+          setHomeworkList([...homeworkList, savedHomework]);
+          setNewHomework(null);
+        } else {
+          console.error("Error adding homework:", await response.text());
+        }
       } catch (error) {
         console.error("Error adding homework:", error);
       }
@@ -65,9 +83,22 @@ export function HomeWork({ homeworks, teacherId , courseId}: HomeWorkProps) {
   // Function to handle saving an edited homework
   const handleSaveEditedHomework = async (homework: Homework) => {
     try {
-      const response = await axios.put(`http://localhost:5143/api/Homework/${homework.id}`, homework);
-      setHomeworkList(homeworkList.map(h => h.id === homework.id ? response.data : h));
-      setEditingHomeworkId(null);
+      const response = await fetch(`http://localhost:5143/api/Homework/${homework.id}`, {
+        method: "PUT",
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(homework)
+      });
+
+      if (response.ok) {
+        const updatedHomework = await response.json();
+        setHomeworkList(homeworkList.map(h => h.id === homework.id ? updatedHomework : h));
+        setEditingHomeworkId(null);
+      } else {
+        console.error("Error editing homework:", await response.text());
+      }
     } catch (error) {
       console.error("Error editing homework:", error);
     }
@@ -76,8 +107,18 @@ export function HomeWork({ homeworks, teacherId , courseId}: HomeWorkProps) {
   // Function to handle deleting a homework
   const handleDeleteHomework = async (homeworkId: number) => {
     try {
-      await axios.delete(`http://localhost:5143/api/Homework/${homeworkId}`);
-      setHomeworkList(homeworkList.filter(h => h.id !== homeworkId));
+      const response = await fetch(`http://localhost:5143/api/Homework/${homeworkId}`, {
+        method: "DELETE",
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        }
+      });
+
+      if (response.ok) {
+        setHomeworkList(homeworkList.filter(h => h.id !== homeworkId));
+      } else {
+        console.error("Error deleting homework:", await response.text());
+      }
     } catch (error) {
       console.error("Error deleting homework:", error);
     }
@@ -122,6 +163,7 @@ export function HomeWork({ homeworks, teacherId , courseId}: HomeWorkProps) {
             <Table>
               <TableHeader>
                 <TableRow>
+                  <TableHead>Course Name</TableHead>
                   <TableHead>Title</TableHead>
                   <TableHead>Description</TableHead>
                   <TableHead>Due Date</TableHead>
@@ -129,14 +171,27 @@ export function HomeWork({ homeworks, teacherId , courseId}: HomeWorkProps) {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {/* Render the new homework row if adding */}
+                {/* Render the form to add a new homework */}
                 {newHomework && (
                   <TableRow key="new-homework">
+                    <TableCell>
+                      <select
+                        value={newHomework.courseId}
+                        onChange={(e) => setNewHomework({ ...newHomework, courseId: parseInt(e.target.value) })}
+                      >
+                        <option value="">Select Course</option>
+                        {courses.map((course) => (
+                          <option key={course.id} value={course.id}>
+                            {course.name}
+                          </option>
+                        ))}
+                      </select>
+                    </TableCell>
                     <TableCell>
                       <Input
                         type="text"
                         value={newHomework.title}
-                        onChange={(e) => setNewHomework({ ...newHomework, title: e.target.value})}
+                        onChange={(e) => setNewHomework({ ...newHomework, title: e.target.value })}
                         placeholder="Title"
                       />
                     </TableCell>
@@ -164,11 +219,25 @@ export function HomeWork({ homeworks, teacherId , courseId}: HomeWorkProps) {
 
                 {/* Render the existing homeworks */}
                 {homeworkList.map((homework) => (
-
                   <TableRow key={homework.id}>
                     <TableCell>
-                      <input type="hidden" value={courseId = homework.courseId} />
-                      <input type="hidden" value={teacherId} />
+                      {editingHomeworkId === homework.id ? (
+                        <select
+                          value={homework.courseId}
+                          onChange={(e) => setHomeworkList(homeworkList.map(h => h.id === homework.id ? { ...h, courseId: parseInt(e.target.value) } : h))}
+                        >
+                          <option value="">Select Course</option>
+                          {courses.map((course) => (
+                            <option key={course.id} value={course.id}>
+                              {course.name}
+                            </option>
+                          ))}
+                        </select>
+                      ) : (
+                        homework.courseName
+                      )}
+                    </TableCell>
+                    <TableCell>
                       {editingHomeworkId === homework.id ? (
                         <Input
                           type="text"

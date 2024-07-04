@@ -60,13 +60,12 @@ namespace SchoolManagement.Controllers
             return CreatedAtAction(nameof(GetStudentCourseById), new { studentId = newStudentCourse.StudentId, courseId = newStudentCourse.CourseId }, newStudentCourse);
         }
 
-        // PUT: api/studentcourse/{studentId}/{courseId}
-        [HttpPut("{studentId}/{courseId}")]
-        public async Task<ActionResult<StudentCourseDto>> UpdateStudentCourse(int studentId, int courseId, StudentCourseCreateUpdateDto studentCourseDto)
+        // PUT api/studentcourse
+        [HttpPut]
+        public async Task<ActionResult<StudentCourseDto>> UpdateStudentCourse(StudentCourseCreateUpdateDto studentCourseDto)
         {
             var studentCourse = _mapper.Map<StudentCourse>(studentCourseDto);
-            studentCourse.StudentId = studentId;
-            studentCourse.CourseId = courseId;
+
 
             var updatedStudentCourse = await _studentCourseService.UpdateStudentCourseAsync(studentCourse);
             if (updatedStudentCourse == null)

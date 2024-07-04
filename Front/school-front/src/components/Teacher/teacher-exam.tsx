@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { Card, CardHeader, CardDescription, CardContent } from "@/components/ui/card";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuItem } from "@/components/ui/dropdown-menu";
@@ -41,64 +40,114 @@ export function TeacherExam({ exams: initialExams, courses: initialCourses, teac
     maxMark: 0,
     date: "",
     time: "",
-    courseId:0,
+    courseId: 0,
     teacherId: teacherId,
     courseName: "",
   });
 
+  // Handle the addition of a new exam
   const handleAddExam = () => {
     setIsAdding(true);
   };
 
+  // Handle the save of a new exam
   const handleSaveNewExam = async () => {
     try {
-      // Send the POST request without the 'id' field
-      const { id, ...examToCreate } = newExam;
-      const response = await axios.post("http://localhost:5143/api/Exam", examToCreate);
-      setExams([...exams, response.data]);
-      setNewExam({
-        name: "",
-        status: "",
-        maxMark: 0,
-        date: "",
-        time: "",
-        courseId:0,
-        teacherId : teacherId,
-        courseName: "",
+      const response = await fetch("http://localhost:5143/api/Exam", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+        },
+        body: JSON.stringify({
+          name: newExam.name,
+          status: newExam.status,
+          maxMark: newExam.maxMark,
+          date: newExam.date,
+          time: newExam.time,
+          courseId: newExam.courseId,
+          teacherId: newExam.teacherId,
+        }),
       });
-      setIsAdding(false);
+
+      if (response.ok) {
+        const savedExam = await response.json();
+        setExams([...exams, savedExam]);
+        setNewExam({
+          name: "",
+          status: "",
+          maxMark: 0,
+          date: "",
+          time: "",
+          courseId: 0,
+          teacherId: teacherId,
+          courseName: "",
+        });
+        setIsAdding(false);
+      } else {
+        console.error("Failed to add exam:", await response.text());
+      }
     } catch (error) {
-      console.error("Failed to add exam", error);
+      console.error("Failed to add exam:", error);
     }
   };
 
+  // Handle the edit of an existing exam
   const handleEditExam = (examId: number) => {
     setIsEditing(examId);
   };
 
+  // Handle the save of an edited exam
   const handleSaveEditExam = async (examId: number) => {
     const updatedExam = exams.find((exam) => exam.id === examId);
     if (updatedExam) {
       try {
-        await axios.put(`http://localhost:5143/api/Exam/${examId}`, updatedExam);
-        setIsEditing(null);
+        const response = await fetch(`http://localhost:5143/api/Exam/${examId}`, {
+          method: "PUT",
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+          },
+          body: JSON.stringify(updatedExam),
+        });
+
+        if (response.ok) {
+          const updatedExamResponse = await response.json();
+          setExams(exams.map((exam) => (exam.id === examId ? updatedExamResponse : exam)));
+          setIsEditing(null);
+        } else {
+          console.error("Failed to update exam:", await response.text());
+        }
       } catch (error) {
-        console.error("Failed to update exam", error);
+        console.error("Failed to update exam:", error);
       }
     }
   };
 
+  // Handle the deletion of an exam
   const handleDeleteExam = async (examId: number) => {
     try {
-      await axios.delete(`http://localhost:5143/api/Exam/${examId}`);
-      setExams(exams.filter((exam) => exam.id !== examId));
+      const response = await fetch(`http://localhost:5143/api/Exam/${examId}`, {
+        method: "DELETE",
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+        },
+      });
+
+      if (response.ok) {
+        setExams(exams.filter((exam) => exam.id !== examId));
+      } else {
+        console.error("Failed to delete exam:", await response.text());
+      }
     } catch (error) {
-      console.error("Failed to delete exam", error);
+      console.error("Failed to delete exam:", error);
     }
   };
 
+  // Handle input change for both new and existing exams
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>, examId?: number) => {
     const { name, value } = e.target;
+
     if (examId === undefined) {
       setNewExam({ ...newExam, [name]: value });
       if (name === "courseId") {
@@ -206,12 +255,6 @@ export function TeacherExam({ exams: initialExams, courses: initialCourses, teac
                         value={exam.maxMark}
                         onChange={(e) => handleInputChange(e, exam.id)}
                       />
-                      <Input 
-                        type="hidden"
-                        name="teacherId"
-                        value={teacherId}
-                        onChange={(e) => handleInputChange(e, exam.id)}
-                      />
                     </TableCell>
                     <TableCell>
                       <Button size="sm" onClick={() => handleSaveEditExam(exam.id)}>
@@ -234,8 +277,8 @@ export function TeacherExam({ exams: initialExams, courses: initialCourses, teac
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
                           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuItem onClick={() => handleEditExam(exam.id)} >Edit</DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleDeleteExam(exam.id)} >Delete</DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleEditExam(exam.id)} style={{color: 'blue'}}>Edit</DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleDeleteExam(exam.id)} style={{color: 'red'}}>Delete</DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>
@@ -296,12 +339,6 @@ export function TeacherExam({ exams: initialExams, courses: initialCourses, teac
                     type="number"
                     name="maxMark"
                     value={newExam.maxMark}
-                    onChange={(e) => handleInputChange(e)}
-                  />
-                  <Input
-                    type="hidden"
-                    name="teacherId"
-                    value={teacherId}
                     onChange={(e) => handleInputChange(e)}
                   />
                 </TableCell>

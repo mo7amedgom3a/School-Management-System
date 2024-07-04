@@ -114,12 +114,6 @@ export function TeacherDashboard({id}) {
   const userRole = decode['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
   console.log(userRole);
 
-
-  if (userRole !== "Admin") {
-    alert('Unauthorized: You are not an admin.');
-    return null;
-  }
-
   if (userRole !== "Teacher" || token === null || token === undefined) {
     alert('Unauthorized: You are not a teacher.');
     return null;
@@ -158,22 +152,13 @@ export function TeacherDashboard({id}) {
   if (loading) {
     return <LoadingPage />;
   }
-  // Set a timeout to show an alert after 10 seconds
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      alert('Timeout!');
-    }, 10000);
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, []);
+  
 
   // Function to render the active component based on the current state
   const renderActiveComponent = () => {
     switch (activeTab) {
       case "HomeWork":
-        return <HomeWork homeworks={homeworks} teacherId={id} />;
+        return <HomeWork homeworks={homeworks} teacherId={id} courses={courses} />;
       case "exams":
         return <TeacherExam exams={exams} courses={courses} teacherId={id}/>;
       case "student-grades":

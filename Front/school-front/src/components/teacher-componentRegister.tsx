@@ -105,7 +105,7 @@ export function TeacherComponent() {
       )}
        {registrationSuccess && window.setTimeout(() => {
         window.location.href = "/Login";
-      }, 3000
+      }, 4000
       )}
       {errorMessage && (
         <Alert severity="error">
@@ -210,9 +210,9 @@ export function TeacherComponent() {
             <div className="space-y-2">
               <Label htmlFor="imgUrl">Profile Image URL</Label>
               <Input
-                id="imgUrl"
+                id="img"
                 type="text"
-                placeholder="http://example.com/image.jpg"
+                placeholder="img.png"
                 value={formData.imgUrl}
                 onChange={handleChange}
               />

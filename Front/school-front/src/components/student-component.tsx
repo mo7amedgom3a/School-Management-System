@@ -9,6 +9,7 @@ import { HomeworkCard } from '@/components/Student/HomeworkCard';
 import { ExamsCard } from '@/components/Student/ExamsCard';
 import LoadingPage from './loadingPage';
 import { UploadHomeworkCard } from '@/components/Student/UploadHomeworkCard';
+import {jwtDecode} from 'jwt-decode';
 
 
 interface CourseTeachers {
@@ -87,19 +88,13 @@ export function StudentComponent({id}) {
     }
   }, [id]);
 
-  if (!studentData) {
-    return <LoadingPage/>;
-  }
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      alert('Timeout!');
-    }, 10000);
+      if (!studentData) {
+        
+          return <LoadingPage/>;
+      }
+  
 
-    return () => {
-      clearTimeout(timer);
-    };
-  }, []);
 
   return (
     <div className="flex flex-col min-h-screen bg-muted/40">

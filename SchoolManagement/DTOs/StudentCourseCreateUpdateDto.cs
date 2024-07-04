@@ -4,5 +4,6 @@ namespace SchoolManagement.Dtos
     {
         public int StudentId { get; set; }
         public int CourseId { get; set; }
+        public int StudentMark { get; set; }
     }
 }

@@ -33,8 +33,9 @@ namespace SchoolManagement.Profiles
             
             CreateMap<Exam, ExamCreateUpdateDto>()
             .ForMember(dest => dest.CourseId, opt => opt.MapFrom(src => src.Course.Id))
-            .ForMember(dest => dest.TeacherId, opt => opt.MapFrom(src => src.Teacher.Id))
-            .ReverseMap();
+            .ForMember(dest => dest.TeacherId, opt => opt.MapFrom(src => src.Teacher.Id));
+
+            CreateMap<Exam, ExamCreateUpdateDto>().ReverseMap();
 
             CreateMap<Attendance, AttendanceDto>()
                 .ForMember(dest => dest.StudentName, opt => opt.MapFrom(src => src.Student.FirstName + " " + src.Student.LastName))

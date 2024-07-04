@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Card, CardHeader, CardDescription, CardContent } from "@/components/ui/card";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuItem } from "@/components/ui/dropdown-menu";
@@ -50,8 +49,13 @@ export function StudentGrade({ grades: initialGrades, courses, teacherId }: Stud
     if (selectedCourseId !== null) {
       const fetchStudents = async () => {
         try {
-          const response = await axios.get(`http://localhost:5143/api/StudentCourse/${selectedCourseId}`);
-          setStudents(response.data);
+          const response = await fetch(`http://localhost:5143/api/StudentCourse/${selectedCourseId}`, {
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+            }
+          });
+          const data = await response.json();
+          setStudents(data);
         } catch (error) {
           console.error("Failed to fetch students", error);
         }
@@ -66,11 +70,21 @@ export function StudentGrade({ grades: initialGrades, courses, teacherId }: Stud
 
   const handleSaveNewGrade = async () => {
     try {
-      const response = await axios.post("http://localhost:5143/api/StudentCourse", {
-        studentId: newGrade.studentId,
-        courseId: selectedCourseId,
-        studentMark: newGrade.grade,
+      const response = await fetch("http://localhost:5143/api/StudentCourse", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        },
+        body: JSON.stringify({
+          studentId: newGrade.studentId,
+          courseId: selectedCourseId,
+          studentMark: newGrade.grade,
+        })
       });
+
+      const data = await response.json();
+
       const newGradeEntry = {
         studentId: newGrade.studentId!,
         courseId: selectedCourseId!,
@@ -96,10 +110,17 @@ export function StudentGrade({ grades: initialGrades, courses, teacherId }: Stud
     const updatedGrade = grades.find((grade) => grade.studentId === studentId && grade.courseId === courseId);
     if (updatedGrade) {
       try {
-        await axios.put(`http://localhost:5143/api/StudentCourse/${studentId}/${courseId}`, {
-          studentId: updatedGrade.studentId,
-          courseId: updatedGrade.courseId,
-          studentMark: updatedGrade.grade,
+        await fetch(`http://localhost:5143/api/StudentCourse`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+          },
+          body: JSON.stringify({
+            studentId: updatedGrade.studentId,
+            courseId: updatedGrade.courseId,
+            studentMark: updatedGrade.grade,
+          })
         });
         setIsEditing(null);
       } catch (error) {
@@ -110,7 +131,12 @@ export function StudentGrade({ grades: initialGrades, courses, teacherId }: Stud
 
   const handleDeleteGrade = async (studentId: number, courseId: number) => {
     try {
-      await axios.delete(`http://localhost:5143/api/StudentCourse/${studentId}/${courseId}`);
+      await fetch(`http://localhost:5143/api/StudentCourse/${studentId}/${courseId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        }
+      });
       setGrades(grades.filter((grade) => !(grade.studentId === studentId && grade.courseId === courseId)));
     } catch (error) {
       console.error("Failed to delete grade", error);

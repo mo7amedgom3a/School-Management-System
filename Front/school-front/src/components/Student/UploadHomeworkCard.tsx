@@ -1,13 +1,8 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import Select from 'react-select';
-import SelectTrigger from 'react-select';
-import SelectContent from 'react-select';
-import SelectItem from 'react-select';
-import SelectValue from 'react-select';
-
 import { Button } from '@/components/ui/button';
 
 interface Homework {
@@ -30,10 +25,12 @@ export function UploadHomeworkCard({ HomeWorks, studentId }: Props) {
   const [uploadStatus, setUploadStatus] = useState<string>('');
   let success = 'Homework uploaded successfully!';
 
-  const handleHomeworkSelect = (value: string) => {
-    setSelectedHomeworkTitle(value);
+  // Handle homework selection from the dropdown
+  const handleHomeworkSelect = (selectedOption: { value: string, label: string } | null) => {
+    setSelectedHomeworkTitle(selectedOption ? selectedOption.value : null);
   };
 
+  // Handle file input change
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -41,6 +38,7 @@ export function UploadHomeworkCard({ HomeWorks, studentId }: Props) {
     }
   };
 
+  // Handle file upload
   const handleUpload = async () => {
     if (!selectedHomeworkTitle || !selectedFile) {
       setUploadStatus('Please select homework and a file to upload.');
@@ -58,7 +56,7 @@ export function UploadHomeworkCard({ HomeWorks, studentId }: Props) {
     const formData = new FormData();
     formData.append('studentId', studentId.toString());
     formData.append('homeworkId', homeworkId.toString());
-    formData.append('Status', 'Submited');
+    formData.append('Status', 'Submitted');
     formData.append('file', selectedFile); // This line sends the file itself
     
     try {
@@ -90,21 +88,27 @@ export function UploadHomeworkCard({ HomeWorks, studentId }: Props) {
       <CardContent>
         <div className="space-y-4">
           <Label>Homework</Label>
+          {/* Select component to choose homework */}
           <Select
-            trigger={SelectTrigger}
-            content={SelectContent}
-            item={SelectItem}
-            value={SelectValue}
             options={HomeWorks.map(hw => ({ value: hw.title, label: hw.title }))}
-            onChange={(value) => handleHomeworkSelect(value)}
+            onChange={(selectedOption) => handleHomeworkSelect(selectedOption)}
+            placeholder="Select a homework"
           />
+          
+          <Label>Selected Homework</Label>
+          {/* Input field to display the selected homework title */}
+          <Input
+            type="text"
+            value={selectedHomeworkTitle || ''}
+            readOnly
+            placeholder="Selected homework will appear here"
+          />
+
           <Label>File</Label>
           <Input type="file" onChange={handleFileChange} />
           <Button onClick={handleUpload}>Upload</Button>
           {uploadStatus && (
-            
-              <p style={{ color: uploadStatus === success ? 'green' : 'red' }}>{uploadStatus}</p>
-            
+            <p style={{ color: uploadStatus === success ? 'green' : 'red' }}>{uploadStatus}</p>
           )}
         </div>
       </CardContent>

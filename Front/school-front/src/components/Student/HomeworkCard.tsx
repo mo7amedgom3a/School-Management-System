@@ -34,7 +34,7 @@ export function HomeworkCard({HomeWorks}:Homeworks[]) {
                 <TableCell>{homework.courseName}</TableCell>
                 <TableCell>{homework.dueDate}</TableCell>
                 <TableCell>
-                  <Badge style={{ background: homework.status === "Completed" || homework.status === "Done" || homework.status === 'Submited' ? "green" : "red" }}>
+                  <Badge style={{ background: homework.status === "Completed" || homework.status === 'Submited'  || homework.status === 'Submitted'? "green" : "red" }}>
                     {homework.status === "Completed" || homework.status === "Done" || homework.status === 'Submited' ? "Completed" : "Pending"}
                   </Badge>
                 </TableCell>
