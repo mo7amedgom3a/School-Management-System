@@ -25,7 +25,7 @@ export function ProgressCard({CourseGrades, totalGrade}: ProgressCardProps) {
           <TableHeader>
             <TableRow>
               <TableHead>Course</TableHead>
-              <TableHead>Grade</TableHead>
+   
               <TableHead>Student Mark</TableHead>
             </TableRow>
           </TableHeader>
@@ -33,7 +33,7 @@ export function ProgressCard({CourseGrades, totalGrade}: ProgressCardProps) {
             {CourseGrades.map((courseGrade) => (
               <TableRow key={courseGrade.courseName}>
                 <TableCell>{courseGrade.courseName}</TableCell>
-                <TableCell>{courseGrade.totalGrade}</TableCell>
+         
                 <TableCell>{courseGrade.studentMark}</TableCell>
               </TableRow>
             ))}

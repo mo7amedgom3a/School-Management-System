@@ -9,7 +9,10 @@ interface homeworks{
   courseName: string;
   status: string;
 }
-export function HomeworkCard({HomeWorks}:Homeworks[]) {
+interface Homeworks {
+  HomeWorks: homeworks[];
+}
+export function HomeworkCard({ HomeWorks }: Homeworks) {
   return (
     <Card>
       <CardHeader>

@@ -15,7 +15,7 @@ interface Homework {
   courseId: number;
   teacherId: number;
   courseName: string;
-  fileUrl: string;
+
 }
 
 interface HomeWorkProps {
@@ -44,8 +44,7 @@ export function HomeWork({ homeworks, teacherId, courses }: HomeWorkProps) {
       dueDate: "",
       teacherId,
       courseId: 0,
-      courseName: "",
-      fileUrl: ""
+      courseName: ""
     });
   };
 

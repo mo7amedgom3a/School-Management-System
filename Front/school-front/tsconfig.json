@@ -21,6 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/api/students.tsx", "src/components/Admin/StudentList.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/api/students.tsx", "src/components/Admin/StudentList.js", "src/app/StudentDashboard/[id]/page.tsx", "src/app/TeacherDashboard/[id]/page.tsx", "src/components/Home/SchoolIcon.js", "src/components/Teacher/icons.js", "src/components/teacher-componentRegister.js", "src/components/login-component.js", "src/components/register-student.js", "src/components/ui/select.js"],
   "exclude": ["node_modules"]
 }

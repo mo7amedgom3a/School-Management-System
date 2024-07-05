@@ -7,11 +7,12 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Select } from "@/components/ui/select"; // Import your Select component if it's available
+import select from "react-select";
+
 import Alert from '@mui/material/Alert'; // Import Alert from Material-UI or your preferred library
 import CheckIcon from '@mui/icons-material/Check'; // Import the CheckIcon for the success alert
 import { redirect } from 'next/navigation'
-import { LoginComponent } from "../components/login-component"
+import { LoginComponent } from "./login-component"
 import { Navigate } from 'react-router-dom';
 
 

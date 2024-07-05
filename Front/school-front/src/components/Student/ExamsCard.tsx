@@ -11,7 +11,7 @@ interface ExamsCardProps {
     courseName: string;
   }[];
 }
-export function ExamsCard({ CourseExams }: ExamsCardProps) {
+export function ExamsCard({ courseExams }: ExamsCardProps) {
   return (
     <Card>
       <CardHeader>
@@ -30,7 +30,7 @@ export function ExamsCard({ CourseExams }: ExamsCardProps) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {CourseExams.map((exam) => (
+            {courseExams.map((exam) => (
               <TableRow key={exam.name}>
                 <TableCell>{exam.courseName}</TableCell>
                 <TableCell>{exam.name}</TableCell>

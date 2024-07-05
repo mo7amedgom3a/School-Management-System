@@ -64,14 +64,11 @@ interface StudentData {
   homeworks: homeworks[];
 }
 
-export function StudentComponent({id}) {
-  const token = localStorage.getItem('authToken');
+export function StudentComponent({id}: {id: number}) {
+  const token = localStorage.getItem('authToken') ?? '';
   const decodedToken = jwtDecode(token);
-  const userRole = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
-  if (userRole !== "Student" || token === null || token === undefined) {
-    alert('Unauthorized: You are not a Student.');
-    return null;
-  }
+  const userRole = (decodedToken as { [key: string]: string })["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+
   const [studentData, setStudentData] = useState<StudentData | null>(null);
 
   useEffect(() => {
@@ -93,22 +90,25 @@ export function StudentComponent({id}) {
         
           return <LoadingPage/>;
       }
-  
-
-
-  return (
-    <div className="flex flex-col min-h-screen bg-muted/40">
-      <Header/>
-      <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          <CoursesCard courseTeachers={studentData.courseTeachers}  />
-          <ProgressCard CourseGrades={studentData.courseGrades} totalGrade={studentData.totalGrade}/>
-          <AttendanceCard classAttendance={studentData.classAttendance} classMissed={studentData.classMissed}/>
-          <HomeworkCard HomeWorks={studentData.homeworks}/>
-          <ExamsCard CourseExams={studentData.courseExams}/>
-          <UploadHomeworkCard HomeWorks={studentData.homeworks} studentId={studentData.id} />
-        </div>
-      </main>
-    </div>
-  );
+      if (userRole !== "Student" || token === null || token === undefined) {
+        alert('Unauthorized: You are not a Student.');
+        return null;
+      }
+      else{
+        return (
+          <div className="flex flex-col min-h-screen bg-muted/40">
+            <Header/>
+            <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <CoursesCard courseTeachers={studentData.courseTeachers}  />
+                <ProgressCard CourseGrades={studentData.courseGrades} totalGrade={studentData.totalGrade}/>
+                <AttendanceCard classAttendance={studentData.classAttendance} classMissed={studentData.classMissed}/>
+                <HomeworkCard HomeWorks={studentData.homeworks}/>
+                <ExamsCard courseExams={studentData.courseExams}/>
+                <UploadHomeworkCard HomeWorks={studentData.homeworks} studentId={studentData.id} />
+              </div>
+            </main>
+          </div>
+        );
+      }
 }

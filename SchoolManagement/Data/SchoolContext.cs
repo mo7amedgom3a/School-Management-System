@@ -139,7 +139,7 @@ namespace SchoolManagement.Data
 
             modelBuilder.Entity<Homework>().Property(h => h.Title).HasColumnType("varchar(200)");
             modelBuilder.Entity<Homework>().Property(h => h.Description).HasColumnType("text");
-            modelBuilder.Entity<Homework>().Property(h => h.FileUrl).HasColumnType("varchar(255)");
+          
 
             modelBuilder.Entity<Exam>().Property(e => e.Name).HasColumnType("varchar(200)");
 

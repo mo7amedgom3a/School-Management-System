@@ -10,8 +10,8 @@ export function StatisticCard() {
     totalDepartments: null,
     totalSalaryPaid: null,
     averageSalary: null,
-    averageStudentMarks: null,
-    totalHomeworkAssignments: null
+    averageStudentMarks: "",
+    totalHomeworkAssignments: null,
   })
 
   // State to track loading status

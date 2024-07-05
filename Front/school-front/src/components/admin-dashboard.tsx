@@ -3,7 +3,7 @@ import { Header } from "@/components/Admin/Header"
 import { StatisticCard } from "@/components/Admin/StatisticCard"
 import { StudentList } from "@/components/Admin/StudentList"
 import { TeacherList } from "@/components/Admin/TeacherList"
-import { CourseList } from "@/components/Admin/CourseList.tsx"
+import { CourseList } from "@/components/Admin/CourseList"
 import { DepartmentList } from "@/components/Admin/DepartmentList"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table"
@@ -16,10 +16,8 @@ export default function AdminDashboard() {
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (token) {
-      const decodedToken = jwtDecode(token);
-      const userRole = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
-      setRole(userRole);
-      console.log(userRole);
+      const decodedToken = jwtDecode(token) as any;
+      setRole(decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]);
     }
   }, []);
   if (role !== "Admin") {

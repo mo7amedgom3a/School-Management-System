@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "p7sDOqSxMWMZUdC0n+/KFR1d9pk5wH3xwauvAJMm7Kw=",
+  "Hash": "uj5ILeaf8WQcM/FHdK3Dih+qgAIIMciukxDLUwOgwU0=",
   "Source": "SchoolManagement",
   "BasePath": "_content/SchoolManagement",
   "Mode": "Default",
@@ -1440,6 +1440,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/Uploads/cd97ea7d-f907-4b9d-b921-48fdad798f7e.PNG"
+    },
+    {
+      "Identity": "/home/mohamed/School-Management-System/SchoolManagement/wwwroot/Uploads/e3fe6871-e2fb-4df9-9eec-7272f6f6320e.PNG",
+      "SourceId": "SchoolManagement",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/mohamed/School-Management-System/SchoolManagement/wwwroot/",
+      "BasePath": "_content/SchoolManagement",
+      "RelativePath": "Uploads/e3fe6871-e2fb-4df9-9eec-7272f6f6320e.PNG",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/Uploads/e3fe6871-e2fb-4df9-9eec-7272f6f6320e.PNG"
     },
     {
       "Identity": "/home/mohamed/School-Management-System/SchoolManagement/wwwroot/Uploads/e940974f-f7ff-47ae-84e7-67da125ec944.png",
