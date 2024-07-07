@@ -10,12 +10,7 @@ COPY ["SchoolManagement/SchoolManagement.csproj", "SchoolManagement/"]
 RUN dotnet restore "SchoolManagement/SchoolManagement.csproj"
 COPY . .
 WORKDIR "/src/SchoolManagement"
-RUN dotnet build "SchoolManagement.csproj" -c Release -o /app/build 
-
-# Stage 2: Set up MySQL and the .NET application
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-
-
+RUN dotnet build "SchoolManagement.csproj" -c Release -o /app/build
 
 # Publish the app to the /app/publish directory
 FROM build AS publish
@@ -25,4 +20,4 @@ RUN dotnet publish "SchoolManagement.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "home/mohamed/School-Management-System/SchoolManagement/bin/Debug/net8.0/SchoolManagement.dll"]
+ENTRYPOINT ["dotnet", "SchoolManagement.dll"]

@@ -1,12 +1,28 @@
-# Please refer https://aka.ms/HTTPSinContainer on how to setup an https developer certificate for your ASP.NET Core service.
-
-version: '3.4'
+version: '3.8'
 
 services:
-  schoolmanagement:
-    image: schoolmanagement
-    build:
-      context: .
-      dockerfile: SchoolManagement/Dockerfile
+  db:
+    image: mysql:5.7
+    container_name: mysqldb 
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: SchoolDB
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./SchoolDB.sql:/docker-entrypoint-initdb.d/SchoolDB.sql # copy the sql file to the container
     ports:
-      - 5000:5000
+      - "3306:3306"
+
+  app:
+    build: .
+    container_name: dotnetapp # container the contain the .net core app and mysql client
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnection: Server=db;Database=SchoolDB;User=root;Password=root;
+    ports:
+      - "3000:80"
+    depends_on:
+      - db
+
+volumes:
+  mysql_data:
