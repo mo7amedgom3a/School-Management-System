@@ -141,14 +141,6 @@ const SelectSeparator = React.forwardRef<
 ));
 SelectSeparator.displayName = SelectPrimitive.Separator.displayName;
 
-const SelectOption = React.forwardRef<
-  React.ElementRef<typeof SelectPrimitive.Option>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Option>
->((props, ref) => (
-  <SelectPrimitive.Option ref={ref} {...props} />
-));
-SelectOption.displayName = SelectPrimitive.Option.displayName;
-
 export {
   Select,
   SelectGroup,
@@ -160,5 +152,4 @@ export {
   SelectSeparator,
   SelectScrollUpButton,
   SelectScrollDownButton,
-  SelectOption,
 };

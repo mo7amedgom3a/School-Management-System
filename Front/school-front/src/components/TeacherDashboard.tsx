@@ -31,6 +31,7 @@ interface Homework {
   description: string;
   dueDate: string;
   courseId: number;
+  teacherId: number;
   courseName: string;
 }
 
@@ -43,6 +44,7 @@ interface Exam {
   maxMark: number;
   date: string;
   time: string;
+  teacherId: number;
 }
 
 
@@ -108,15 +110,15 @@ const fetchCourses = async (teacherId: number): Promise<Course[]> => {
 
 
 // Main component
-export function TeacherDashboard({id}) {
+export function TeacherDashboard({ id }: { id:number }) {
+
   const token = localStorage.getItem('authToken') ?? '';
   const decode = jwtDecode(token);
-  const userRole = decode['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+  const userRole = (decode as any)['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
   console.log(userRole);
 
   if (userRole !== "Teacher" || token === null || token === undefined) {
     alert('Unauthorized: You are not a teacher.');
-    return null;
   }
   const [activeTab, setActiveTab] = useState("students");
   const [students, setStudents] = useState<Student[]>([]);
