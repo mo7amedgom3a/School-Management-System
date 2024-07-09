@@ -1,25 +1,25 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/router";
 import { jwtDecode } from "jwt-decode";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SchoolIcon } from "lucide-react";
-import Alert from '@mui/material/Alert'; 
-import { redirect } from "next/navigation";
+import Alert from '@mui/material/Alert';
+
 
 export function LoginComponent() {
-  localStorage.removeItem("authToken"); // Clear the token when the user logs out
+
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+  
     try {
       const response = await fetch("http://localhost:5143/api/Auth/login", {
         method: "POST",
@@ -28,20 +28,20 @@ export function LoginComponent() {
         },
         body: JSON.stringify({ username, password }),
       });
-
+  
       if (response.ok) {
         const data = await response.json();
         const token = data.token;
-
+  
         // Save the token to local storage or a secure place
         localStorage.setItem("authToken", token);
-
+  
         // Decode the token to get the role and username
         const decodedToken = jwtDecode(token);
-
+  
         const userRole = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
         const userNameFromToken = decodedToken["sub"];
-
+  
         if (userRole === "Student") {
           // Fetch the student ID
           const studentResponse = await fetch(`http://localhost:5143/api/Student/student/${userNameFromToken}`);
@@ -49,7 +49,7 @@ export function LoginComponent() {
             const studentId = await studentResponse.json();
             console.log(studentId);
             // Redirect to the StudentDashboard with student ID
-           window.location.href = `/StudentDashboard/${studentId}`;
+          window.location.href = `/StudentDashboard/${studentId}`;
           } else {
             setErrorMessage("Failed to retrieve student details.");
           }
@@ -58,7 +58,7 @@ export function LoginComponent() {
           const teacherResponse = await fetch(`http://localhost:5143/api/Teacher/teacher/${userNameFromToken}`);
           if (teacherResponse.ok) {
             const teacherId = await teacherResponse.json();
-
+  
             // Redirect to the TeacherDashboard with teacher ID
             window.location.href = `/TeacherDashboard/${teacherId}`;
           } else {
@@ -76,9 +76,11 @@ export function LoginComponent() {
       setErrorMessage("An error occurred. Please try again.");
     }
   };
+  
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
+    <>
+       <div className="flex min-h-screen items-center justify-center bg-background">
       <div className="w-full max-w-md space-y-8">
         <div className="flex flex-col items-center justify-center">
           <SchoolIcon className="w-16 h-16 text-primary" />
@@ -129,5 +131,6 @@ export function LoginComponent() {
         </Card>
       </div>
     </div>
+    </>
   );
 }

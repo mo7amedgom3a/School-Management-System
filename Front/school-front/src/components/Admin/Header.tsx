@@ -11,7 +11,7 @@ export function Header() {
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link href="#" prefetch={false}>
+              <Link href="/" prefetch={false}>
                 Dashboard
               </Link>
             </BreadcrumbLink>

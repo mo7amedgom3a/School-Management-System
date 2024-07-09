@@ -1,8 +1,6 @@
 // src/components/Home/HeroSection.tsx
 import Link from 'next/link';
-import { LoginComponent } from '../login-component';
-import { RegisterStudent } from '../register-student';
-import { TeacherComponent } from "../teacher-componentRegister"
+
 export function HeroSection() {
   return (
     <section className="w-full py-12 md:py-24 lg:py-32">

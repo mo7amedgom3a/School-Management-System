@@ -12,7 +12,7 @@ export function Navigation() {
           <Link href="/" passHref>
             <a className="hover:underline">Home</a>
           </Link>
-          <Link href="/login" passHref>
+          <Link href="/Login" passHref>
             <a className="hover:underline">Login</a>
           </Link>
           <Link href="/teacher/dashboard" passHref>

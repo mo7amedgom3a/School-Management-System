@@ -1,19 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router"; // Import the useRouter hook from Next.js
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import select from "react-select";
-
 import Alert from '@mui/material/Alert'; // Import Alert from Material-UI or your preferred library
 import CheckIcon from '@mui/icons-material/Check'; // Import the CheckIcon for the success alert
-import { redirect } from 'next/navigation'
-import { LoginComponent } from "./login-component"
-import { Navigate } from 'react-router-dom';
 
 
 export function RegisterStudent() {

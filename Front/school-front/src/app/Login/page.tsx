@@ -1,8 +1,8 @@
-import { LoginComponent } from "@/components/login-component";
-export default function Login(){
+import { LoginComponent } from "@/components/loginComponent";
+export default function StudentLogin(){
     return (
-        <div>
+  
         <LoginComponent />
-        </div>
+
     );
 }

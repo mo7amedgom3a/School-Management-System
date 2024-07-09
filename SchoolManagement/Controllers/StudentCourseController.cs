@@ -65,6 +65,7 @@ namespace SchoolManagement.Controllers
         public async Task<ActionResult<StudentCourseDto>> UpdateStudentCourse(StudentCourseCreateUpdateDto studentCourseDto)
         {
             var studentCourse = _mapper.Map<StudentCourse>(studentCourseDto);
+            studentCourse.FullMark = 100;
 
 
             var updatedStudentCourse = await _studentCourseService.UpdateStudentCourseAsync(studentCourse);
