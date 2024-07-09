@@ -25,4 +25,4 @@ RUN dotnet publish "SchoolManagement.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "home/mohamed/School-Management-System/SchoolManagement/bin/Debug/net8.0/SchoolManagement.dll"]
+ENTRYPOINT ["dotnet", "SchoolManagement/bin/Debug/net8.0/SchoolManagement.dll"]

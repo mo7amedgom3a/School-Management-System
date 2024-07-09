@@ -19,7 +19,7 @@
   - [Student](#student)
   - [Teacher](#teacher)
   - [Admin](#admin)
-- [Screenshots](#screenshots)
+
 
 ## Overview
 The School Management System is a comprehensive web application designed to streamline the administrative tasks of schools and educational institutions. The system allows admins to manage students and teachers, teachers to manage their classes and assignments, and students to view their progress and submit homework.
@@ -35,8 +35,7 @@ The School Management System is a comprehensive web application designed to stre
 ## Backend Architecture
 The backend is structured to follow the Clean Architecture principles, which separate the concerns of the application and make the codebase more maintainable.
 
-![backend]("/home/mohamed/School-Management-System/Front/school-front/public/Admin.jpg")
-
+![backend](https://github.com/mo7amedgom3a/School-Management-System/blob/main/Front/school-front/public/backend.png?raw=true)
 ### Controllers
 Controllers handle incoming HTTP requests, pass them to the appropriate service, and return the HTTP response.
 
@@ -57,31 +56,34 @@ The frontend is built using Next.js, a React framework that enables server-side 
 
 ### Pages
 - **Home Page**: The landing page of the application.
-![home]("/home/mohamed/School-Management-System/Front/school-front/public/Admin.jpg")
+![home](https://github.com/mo7amedgom3a/School-Management-System/blob/main/Front/school-front/public/Homepage.png?raw=true)
 - **Login Page**: Allows users to log in to the system.
 
-![login]("/home/mohamed/School-Management-System/Front/school-front/public/Admin.jpg")
+![login](https://github.com/mo7amedgom3a/School-Management-System/blob/main/Front/school-front/public/login.PNG?raw=true)
 - **Register for Student**: Registration form for students.
-![Register student]("/home/mohamed/School-Management-System/Front/school-front/public/Admin.jpg")
+![Register student](https://github.com/mo7amedgom3a/School-Management-System/blob/main/Front/school-front/public/studentRegister.PNG?raw=true)
 - **Register for Teacher**: Registration form for teachers.
-![Register teacher]("/home/mohamed/School-Management-System/Front/school-front/public/Admin.jpg")
+![Register teacher](https://github.com/mo7amedgom3a/School-Management-System/blob/main/Front/school-front/public/teacherRegister.PNG?raw=true)
 - **Admin Dashboard**: Admin control panel for managing users and classes.
 
-![Admin]("/home/mohamed/School-Management-System/Front/school-front/public/Admin.jpg")
+![Admin](https://github.com/mo7amedgom3a/School-Management-System/blob/main/Front/school-front/public/Admin.png?raw=true)
 - **Student Dashboard**: Dashboard for students to view their assignments and progress.
 
-![student]("/home/mohamed/School-Management-System/Front/school-front/public/Admin.jpg")
+![student](https://github.com/mo7amedgom3a/School-Management-System/blob/main/Front/school-front/public/studentDashboard.png?raw=true)
 - **Teacher Dashboard**: Dashboard for teachers to manage their classes and assignments.
 
-1) **Student list** ![teacher]("/home/mohamed/School-Management-System/Front/school-front/public/Admin.jpg")
-2) **HomeWorks**![teacher]("/home/mohamed/School-Management-System/Front/school-front/public/Admin.jpg")
-3) **Exams** ![teacher]("/home/mohamed/School-Management-System/Front/school-front/public/Admin.jpg")
-4) **Grads** ![teacher]("/home/mohamed/School-Management-System/Front/school-front/public/Admin.jpg")
+1) **Student list** ![teacher](https://github.com/mo7amedgom3a/School-Management-System/blob/main/Front/school-front/public/teacherStudents.png?raw=true)
+2) **HomeWorks**![teacher](https://github.com/mo7amedgom3a/School-Management-System/blob/main/Front/school-front/public/homeworks.png?raw=true)
+3) **Exams** ![teacher](https://github.com/mo7amedgom3a/School-Management-System/blob/main/Front/school-front/public/exams.png?raw=true)
+4) **Grads** ![teacher](https://github.com/mo7amedgom3a/School-Management-System/blob/main/Front/school-front/public/grads.png?raw=true)
 ## Database Structure
 The database is structured to support the various functionalities of the system. Below is the Entity Relationship Diagram (ERD) for the database:
 
-![ERD](path-to-ERD-image)
+### SchoolDB ERD
+![ERD](https://github.com/mo7amedgom3a/School-Management-System/blob/main/Front/school-front/public/school_db.png?raw=true)
 
+### SchoolDB Identity ERD
+![ERD](https://github.com/mo7amedgom3a/School-Management-System/blob/main/Front/school-front/public/school_identity_db.png?raw=true)
 ## Installation
 To install the necessary dependencies for the project, run the following script:
 
@@ -132,6 +134,105 @@ dotnet run &
 cd ../frontend
 npm run dev
 ```
+# Docker
+you can pull image and use it and can create it manually
+### Pull The Image
+```bash
+docker pull mohamedgomaa77/school-management:latest
+```
+### Building Docker Images
+1) Create a `Dockerfile` for the .NET backend:
+```bash
+# Use the official ASP.NET Core runtime as a parent image
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+WORKDIR /app
+EXPOSE 80
+
+# Use the SDK image for building the app
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+COPY ["SchoolManagement/SchoolManagement.csproj", "SchoolManagement/"]
+RUN dotnet restore "SchoolManagement/SchoolManagement.csproj"
+COPY . .
+WORKDIR "/src/SchoolManagement"
+RUN dotnet build "SchoolManagement.csproj" -c Release -o /app/build 
+
+# Stage 2: Set up MySQL and the .NET application
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+
+
+
+# Publish the app to the /app/publish directory
+FROM build AS publish
+RUN dotnet publish "SchoolManagement.csproj" -c Release -o /app/publish
+
+# Use the base image to run the app
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "home/mohamed/School-Management-System/SchoolManagement/bin/Debug/net8.0/SchoolManagement.dll"]
+```
+2) Create a `Dockerfile` for MySQL:
+```bash
+# Use the official MySQL image
+FROM mysql:5.7
+
+# Copy the database schema file to the container
+COPY ./SchoolDB.sql /docker-entrypoint-initdb.d/SchoolDB.sql
+
+# Set environment variables
+ENV MYSQL_ROOT_PASSWORD=2003
+ENV MYSQL_DATABASE=SchoolDB
+
+```
+3)  **Docker Compose**
+Create a docker-compose.yml file to run both the .NET backend and MySQL together:
+```bash
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 2003
+      MYSQL_DATABASE: SchoolDB
+    volumes:
+      - ./SchoolDB.sql:/docker-entrypoint-initdb.d/SchoolDB.sql
+    ports:
+      - "3306:3306"
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=mysql;Database=SchoolDB;User=root;Password=2003;
+    depends_on:
+      - mysql
+    ports:
+      - "5143:80"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+```
+### Running the Containers
+To build and run the containers, use the following commands:
+```bash
+docker-compose build
+docker-compose up
+```
+
 # MVP Description
 
 
