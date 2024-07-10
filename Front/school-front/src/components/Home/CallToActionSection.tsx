@@ -2,6 +2,13 @@
 import Link from 'next/link';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { RxGithubLogo } from "react-icons/rx";
+import { RxLinkedinLogo } from 'react-icons/rx';
+import { RxTwitterLogo } from 'react-icons/rx';
+import { RxInstagramLogo } from 'react-icons/rx';
+import { BiLogoGmail } from "react-icons/bi";
+import { AiOutlineMediumWorkmark } from "react-icons/ai";
+import { AiOutlineMedium } from "react-icons/ai";
 
 export function CallToActionSection() {
   return (
@@ -9,23 +16,31 @@ export function CallToActionSection() {
       <div className="container grid items-center justify-center gap-4 px-4 text-center md:px-6">
         <div className="space-y-3">
           <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">
-            Ready to Streamline Your School?
+            Contact us 
           </h2>
-          <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-            Sign up today and experience the power of our comprehensive school management system.
+          <p className="text-lg text-gray-600 md:text-xl">
+            Our website is under construction. Please contact us for more information.
           </p>
-        </div>
-        <div className="mx-auto w-full max-w-sm space-y-2">
-          <form className="flex gap-2">
-            <Input type="email" placeholder="Enter your email" className="max-w-lg flex-1" />
-            <Button type="submit">Sign Up</Button>
-          </form>
-          <p className="text-xs text-muted-foreground">
-            Sign up to get started.{" "}
-            <Link href="#" className="underline underline-offset-2" prefetch={false}>
-              Terms & Conditions
+          <div className="flex items-center justify-center gap-4">
+            <Link href="https://github.com/mo7amedgom3a" className="text-gray-800 hover:text-gray-900" prefetch={false}>          
+                <RxGithubLogo className="w-6 h-6" />
             </Link>
-          </p>
+            <Link href="https://www.linkedin.com/in/mohamed-gomaa-626a18249" className="text-gray-800 hover:text-gray-900" prefetch={false}>
+                <RxLinkedinLogo className="w-6 h-6" />
+            </Link>
+            <Link href="https://medium.com/@mo7amed.gom3a.7moda" className="text-gray-800 hover:text-gray-900" prefetch={false}>
+                <AiOutlineMediumWorkmark className="w-6 h-6" />
+            </Link>
+            <Link href="https://www.linkedin.com/in/mohamed-gomaa-626a18249" className="text-gray-800 hover:text-gray-900" prefetch={false}>
+                <RxTwitterLogo className="w-6 h-6" />
+            </Link>
+            <Link href="https://www.instagram.com/mohamd.gomaa.hamoda/" className="text-gray-800 hover:text-gray-900" prefetch={false}>
+                <RxInstagramLogo className="w-6 h-6" />
+            </Link>
+            <Link href="mailto:mo7amedgom3a7moda@gmail.com" className="text-gray-800 hover:text-gray-900" prefetch={false}>
+                <BiLogoGmail className="w-6 h-6" />
+            </Link>
+            </div>
         </div>
       </div>
     </section>
